@@ -81,16 +81,16 @@ def l2_pool_forward_kernel(
     height: int,
     width: int,
     total: int,
-    epsilon: float,
     BLOCK_SIZE: triton.language.constexpr,
     RADIUS: triton.language.constexpr,
+    EPSILON: triton.language.constexpr,
 ) -> None:
     """Write sqrt(sum of squares over the window + epsilon) for one block."""
     offsets = block_offsets(BLOCK_SIZE)
     squares = sum_window_squares(
         input_pointer, offsets, total, height, width, BLOCK_SIZE, RADIUS
     )
-    result = triton.language.sqrt(squares + epsilon)
+    result = triton.language.sqrt(squares + EPSILON)
     triton.language.store(
         output_pointer + offsets,
         result.to(output_pointer.dtype.element_ty),
@@ -183,9 +183,9 @@ def launch_forward(features: torch.Tensor, output: torch.Tensor) -> None:
         features.shape[-2],
         features.shape[-1],
         features.numel(),
-        L2_POOL_EPSILON,
         BLOCK_SIZE=TRITON_BLOCK_SIZE,
         RADIUS=TRITON_WINDOW_RADIUS,
+        EPSILON=L2_POOL_EPSILON,
     )
 
 
