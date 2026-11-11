@@ -16,7 +16,6 @@ from typing import cast
 import torch
 from torch.autograd.function import FunctionCtx
 import triton
-import triton.language as language
 
 from face_verification.training_settings import (
     L2_POOL_EPSILON,
@@ -29,20 +28,21 @@ from face_verification.training_settings import (
 
 
 @triton.jit
-def block_offsets(BLOCK_SIZE: language.constexpr) -> language.tensor:
+def block_offsets(BLOCK_SIZE: triton.language.constexpr) -> triton.language.tensor:
     """Return the flat offsets of the elements of this block."""
-    return language.program_id(0) * BLOCK_SIZE + language.arange(0, BLOCK_SIZE)
+    block_start = triton.language.program_id(0) * BLOCK_SIZE
+    return block_start + triton.language.arange(0, BLOCK_SIZE)
 
 
 @triton.jit
 def neighbour_valid(
-    offsets: language.tensor,
+    offsets: triton.language.tensor,
     total: int,
     height: int,
     width: int,
-    row_shift: language.constexpr,
-    column_shift: language.constexpr,
-) -> language.tensor:
+    row_shift: triton.language.constexpr,
+    column_shift: triton.language.constexpr,
+) -> triton.language.tensor:
     """Return whether the shifted position of every element lies in its map."""
     neighbour_row = (offsets // width) % height + row_shift
     neighbour_column = offsets % width + column_shift
@@ -52,45 +52,46 @@ def neighbour_valid(
 
 @triton.jit
 def sum_window_squares(
-    input_pointer: language.tensor,
-    offsets: language.tensor,
+    input_pointer: triton.language.tensor,
+    offsets: triton.language.tensor,
     total: int,
     height: int,
     width: int,
-    BLOCK_SIZE: language.constexpr,
-    RADIUS: language.constexpr,
-) -> language.tensor:
+    BLOCK_SIZE: triton.language.constexpr,
+    RADIUS: triton.language.constexpr,
+) -> triton.language.tensor:
     """Sum the squares of the window around every position in float32."""
-    squares = language.zeros([BLOCK_SIZE], dtype=language.float32)
-    for row_shift in language.static_range(-RADIUS, RADIUS + 1):
-        for column_shift in language.static_range(-RADIUS, RADIUS + 1):
+    squares = triton.language.zeros([BLOCK_SIZE], dtype=triton.language.float32)
+    for row_shift in triton.language.static_range(-RADIUS, RADIUS + 1):
+        for column_shift in triton.language.static_range(-RADIUS, RADIUS + 1):
             valid = neighbour_valid(
                 offsets, total, height, width, row_shift, column_shift
             )
             shifted = offsets + row_shift * width + column_shift
-            value = language.load(input_pointer + shifted, mask=valid, other=0.0)
-            squares += value.to(language.float32) * value.to(language.float32)
+            value = triton.language.load(input_pointer + shifted, mask=valid, other=0.0)
+            widened = value.to(triton.language.float32)
+            squares += widened * widened
     return squares
 
 
 @triton.jit
 def l2_pool_forward_kernel(
-    input_pointer: language.tensor,
-    output_pointer: language.tensor,
+    input_pointer: triton.language.tensor,
+    output_pointer: triton.language.tensor,
     height: int,
     width: int,
     total: int,
     epsilon: float,
-    BLOCK_SIZE: language.constexpr,
-    RADIUS: language.constexpr,
+    BLOCK_SIZE: triton.language.constexpr,
+    RADIUS: triton.language.constexpr,
 ) -> None:
     """Write sqrt(sum of squares over the window + epsilon) for one block."""
     offsets = block_offsets(BLOCK_SIZE)
     squares = sum_window_squares(
         input_pointer, offsets, total, height, width, BLOCK_SIZE, RADIUS
     )
-    result = language.sqrt(squares + epsilon)
-    language.store(
+    result = triton.language.sqrt(squares + epsilon)
+    triton.language.store(
         output_pointer + offsets,
         result.to(output_pointer.dtype.element_ty),
         mask=offsets < total,
@@ -99,32 +100,32 @@ def l2_pool_forward_kernel(
 
 @triton.jit
 def load_gradient_ratio(
-    gradient_pointer: language.tensor,
-    output_pointer: language.tensor,
-    shifted: language.tensor,
-    valid: language.tensor,
-) -> language.tensor:
+    gradient_pointer: triton.language.tensor,
+    output_pointer: triton.language.tensor,
+    shifted: triton.language.tensor,
+    valid: triton.language.tensor,
+) -> triton.language.tensor:
     """Load grad_output / output at the given positions, zero outside the map."""
-    gradient = language.load(gradient_pointer + shifted, mask=valid, other=0.0)
-    output = language.load(output_pointer + shifted, mask=valid, other=1.0)
-    return gradient.to(language.float32) / output.to(language.float32)
+    gradient = triton.language.load(gradient_pointer + shifted, mask=valid, other=0.0)
+    output = triton.language.load(output_pointer + shifted, mask=valid, other=1.0)
+    return gradient.to(triton.language.float32) / output.to(triton.language.float32)
 
 
 @triton.jit
 def sum_gradient_ratios(
-    gradient_pointer: language.tensor,
-    output_pointer: language.tensor,
-    offsets: language.tensor,
+    gradient_pointer: triton.language.tensor,
+    output_pointer: triton.language.tensor,
+    offsets: triton.language.tensor,
     total: int,
     height: int,
     width: int,
-    BLOCK_SIZE: language.constexpr,
-    RADIUS: language.constexpr,
-) -> language.tensor:
+    BLOCK_SIZE: triton.language.constexpr,
+    RADIUS: triton.language.constexpr,
+) -> triton.language.tensor:
     """Sum grad_output / output over the windows that contain every position."""
-    ratios = language.zeros([BLOCK_SIZE], dtype=language.float32)
-    for row_shift in language.static_range(-RADIUS, RADIUS + 1):
-        for column_shift in language.static_range(-RADIUS, RADIUS + 1):
+    ratios = triton.language.zeros([BLOCK_SIZE], dtype=triton.language.float32)
+    for row_shift in triton.language.static_range(-RADIUS, RADIUS + 1):
+        for column_shift in triton.language.static_range(-RADIUS, RADIUS + 1):
             valid = neighbour_valid(
                 offsets, total, height, width, row_shift, column_shift
             )
@@ -137,15 +138,15 @@ def sum_gradient_ratios(
 
 @triton.jit
 def l2_pool_backward_kernel(
-    input_pointer: language.tensor,
-    output_pointer: language.tensor,
-    gradient_output_pointer: language.tensor,
-    gradient_input_pointer: language.tensor,
+    input_pointer: triton.language.tensor,
+    output_pointer: triton.language.tensor,
+    gradient_output_pointer: triton.language.tensor,
+    gradient_input_pointer: triton.language.tensor,
     height: int,
     width: int,
     total: int,
-    BLOCK_SIZE: language.constexpr,
-    RADIUS: language.constexpr,
+    BLOCK_SIZE: triton.language.constexpr,
+    RADIUS: triton.language.constexpr,
 ) -> None:
     """Write x * sum(grad_output / output) over the neighbour windows."""
     offsets = block_offsets(BLOCK_SIZE)
@@ -159,10 +160,12 @@ def l2_pool_backward_kernel(
         BLOCK_SIZE,
         RADIUS,
     )
-    features = language.load(input_pointer + offsets, mask=offsets < total, other=0.0)
-    language.store(
+    features = triton.language.load(
+        input_pointer + offsets, mask=offsets < total, other=0.0
+    )
+    triton.language.store(
         gradient_input_pointer + offsets,
-        (features.to(language.float32) * ratios).to(features.dtype),
+        (features.to(triton.language.float32) * ratios).to(features.dtype),
         mask=offsets < total,
     )
 

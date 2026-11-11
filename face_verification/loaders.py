@@ -24,6 +24,7 @@ from face_verification.training_settings import (
     NORMALIZATION_MEAN,
     NORMALIZATION_STANDARD_DEVIATION,
     PINS_DIRECTORY,
+    PIN_LOADER_MEMORY,
     SAMPLES_PER_IDENTITY,
     VALIDATION_PAIRS,
     VALIDATION_PAIRS_SEED,
@@ -68,7 +69,7 @@ def build_training_loader(split: IdentitySplit) -> TrainingLoader:
         dataset,
         batch_sampler=sampler,
         num_workers=LOADER_WORKERS,
-        pin_memory=True,
+        pin_memory=PIN_LOADER_MEMORY,
     )
 
 
@@ -89,7 +90,7 @@ def build_pairs_loader(
         batch_size=EVALUATION_BATCH_SIZE,
         shuffle=False,
         num_workers=LOADER_WORKERS,
-        pin_memory=True,
+        pin_memory=PIN_LOADER_MEMORY,
     )
 
 
