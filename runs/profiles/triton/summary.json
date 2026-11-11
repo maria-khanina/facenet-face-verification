@@ -1,0 +1,160 @@
+{
+  "pool_backend": "triton",
+  "compiled": false,
+  "timed_steps": 30,
+  "data_wait_seconds": 0.004974686466812273,
+  "gpu_step_seconds": 0.11416377383344904,
+  "peak_gpu_gibibytes": 1.6037187576293945,
+  "top_operators": [
+    {
+      "name": "ProfilerStep*",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 115.69835850000003
+    },
+    {
+      "name": "aten::convolution_backward",
+      "calls": 590,
+      "gpu_milliseconds_per_step": 35.086519300000106
+    },
+    {
+      "name": "aten::cudnn_convolution",
+      "calls": 590,
+      "gpu_milliseconds_per_step": 15.423224900000005
+    },
+    {
+      "name": "aten::copy_",
+      "calls": 1360,
+      "gpu_milliseconds_per_step": 10.139704399999912
+    },
+    {
+      "name": "Memcpy HtoD (Pageable -> Device)",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 9.39218450000004
+    },
+    {
+      "name": "void cudnn::engines_precompiled::nchwToNhwcKernel<__half, __half, float, false, true, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nchw2nhwc_params_t<float>, __half const*, __half*)",
+      "calls": 1900,
+      "gpu_milliseconds_per_step": 9.364335100000092
+    },
+    {
+      "name": "void at::native::(anonymous namespace)::max_pool_backward_nchw<c10::Half, float, int>(c10::Half const*, long const*, int, int, int, int, int, int, int, int, int, int, int, int, int, int, c10::Half*)",
+      "calls": 60,
+      "gpu_milliseconds_per_step": 9.225484500000077
+    },
+    {
+      "name": "aten::max_pool2d_with_indices_backward",
+      "calls": 60,
+      "gpu_milliseconds_per_step": 9.225484500000077
+    },
+    {
+      "name": "aten::cudnn_batch_norm_backward",
+      "calls": 590,
+      "gpu_milliseconds_per_step": 6.923016100000224
+    },
+    {
+      "name": "aten::threshold_backward",
+      "calls": 600,
+      "gpu_milliseconds_per_step": 5.1846105999998295
+    },
+    {
+      "name": "aten::add_",
+      "calls": 2720,
+      "gpu_milliseconds_per_step": 5.101373199999977
+    },
+    {
+      "name": "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctor_add<c10::Half>, std::array<char*, 3ul>, false>(int, at::native::CUDAFunctor_add<c10::Half>, std::array<char*, 3ul>)",
+      "calls": 290,
+      "gpu_milliseconds_per_step": 5.014967099999948
+    },
+    {
+      "name": "aten::cudnn_batch_norm",
+      "calls": 590,
+      "gpu_milliseconds_per_step": 3.7569160999998146
+    },
+    {
+      "name": "sm80_xmma_wgrad_implicit_gemm_indexed_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize64x128x32_stage5_warpsize2x2x1_g1_tensor16x8x16_execute_kernel__5x_cudnn",
+      "calls": 210,
+      "gpu_milliseconds_per_step": 3.736391500000005
+    },
+    {
+      "name": "void at::native::(anonymous namespace)::max_pool_forward_nchw<c10::Half, int>(int, c10::Half const*, long, long, long, int, int, int, int, int, int, int, int, int, int, c10::Half*, long*)",
+      "calls": 60,
+      "gpu_milliseconds_per_step": 3.3918939000000234
+    },
+    {
+      "name": "aten::max_pool2d_with_indices",
+      "calls": 60,
+      "gpu_milliseconds_per_step": 3.3918939000000234
+    },
+    {
+      "name": "l2_pool_backward_kernel",
+      "calls": 60,
+      "gpu_milliseconds_per_step": 3.238565600000016
+    },
+    {
+      "name": "FusedL2PoolBackward",
+      "calls": 60,
+      "gpu_milliseconds_per_step": 3.238565600000016
+    },
+    {
+      "name": "void at::native::vectorized_elementwise_kernel<4, at::native::BinaryFunctor<c10::Half, c10::Half, c10::Half, at::native::(anonymous namespace)::threshold_kernel_impl<c10::Half>(at::TensorIteratorBase&, c10::Half, c10::Half)::{lambda(c10::Half, c10::Half)#1}>, std::array<char*, 3ul>, false>(int, at::native::BinaryFunctor<c10::Half, c10::Half, c10::Half, at::native::(anonymous namespace)::threshold_kernel_impl<c10::Half>(at::TensorIteratorBase&, c10::Half, c10::Half)::{lambda(c10::Half, c10::Half)#1}>, std::array<char*, 3ul>)",
+      "calls": 230,
+      "gpu_milliseconds_per_step": 3.0412417999999324
+    },
+    {
+      "name": "sm80_xmma_wgrad_implicit_gemm_indexed_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize256x128x32_stage3_warpsize4x2x1_g1_tensor16x8x16_execute_kernel__5x_cudnn",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 2.997760199999991
+    },
+    {
+      "name": "sm80_xmma_dgrad_implicit_gemm_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize128x128x32_stage4_warpsize2x2x1_g1_tensor16x8x16_execute_kernel__5x_cudnn",
+      "calls": 140,
+      "gpu_milliseconds_per_step": 2.96667330000007
+    },
+    {
+      "name": "void cudnn::engines_precompiled::nhwcToNchwKernel<__half, __half, float, true, false, (cudnnKernelDataType_t)0>(cudnn::engines_precompiled::nhwc2nchw_params_t<float>, __half const*, __half*)",
+      "calls": 760,
+      "gpu_milliseconds_per_step": 2.740692000000017
+    },
+    {
+      "name": "Optimizer.step#AdamW.step",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 2.5988686000000016
+    },
+    {
+      "name": "void cutlass::Kernel2<cutlass_80_tensorop_f16_s16816gemm_f16_128x256_32x3_nt_align2>(cutlass_80_tensorop_f16_s16816gemm_f16_128x256_32x3_nt_align2::Params)",
+      "calls": 130,
+      "gpu_milliseconds_per_step": 2.572798799999979
+    },
+    {
+      "name": "void wgrad_alg0_engine<__half, 128, 5, 5, 3, 3, 3, false, 512>(int, int, int, __half const*, int, __half*, __half const*, kernel_grad_params, unsigned long long, int, float, int, int, int, int)",
+      "calls": 50,
+      "gpu_milliseconds_per_step": 2.481967000000071
+    },
+    {
+      "name": "void cudnn::bn_bw_1C11_kernel_new<__half, float, float2, 128, true, 1>(float, float, float, float, cudnnTensorStruct, __half const*, cudnnTensorStruct, __half const*, cudnnTensorStruct, __half*, float const*, float*, float*, float const*, float const*, float)",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 2.239247300000016
+    },
+    {
+      "name": "void cudnn::bn_bw_1C11_kernel_new<__half, float, float2, 512, true, 1>(float, float, float, float, cudnnTensorStruct, __half const*, cudnnTensorStruct, __half const*, cudnnTensorStruct, __half*, float const*, float*, float*, float const*, float const*, float)",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 2.2046778000000007
+    },
+    {
+      "name": "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<c10::Half, c10::Half, c10::Half, at::native::(anonymous namespace)::threshold_kernel_impl<c10::Half>(at::TensorIteratorBase&, c10::Half, c10::Half)::{lambda(c10::Half, c10::Half)#1}> >(at::TensorIteratorBase&, at::native::BinaryFunctor<c10::Half, c10::Half, c10::Half, at::native::(anonymous namespace)::threshold_kernel_impl<c10::Half>(at::TensorIteratorBase&, c10::Half, c10::Half)::{lambda(c10::Half, c10::Half)#1}> const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<c10::Half, c10::Half, c10::Half, at::native::(anonymous namespace)::threshold_kernel_impl<c10::Half>(at::TensorIteratorBase&, c10::Half, c10::Half)::{lambda(c10::Half, c10::Half)#1}> >(at::TensorIteratorBase&, at::native::BinaryFunctor<c10::Half, c10::Half, c10::Half, at::native::(anonymous namespace)::threshold_kernel_impl<c10::Half>(at::TensorIteratorBase&, c10::Half, c10::Half)::{lambda(c10::Half, c10::Half)#1}> const&)::{lambda(int)#1})",
+      "calls": 360,
+      "gpu_milliseconds_per_step": 2.142178199999878
+    },
+    {
+      "name": "aten::clamp_min_",
+      "calls": 610,
+      "gpu_milliseconds_per_step": 1.9665060999999493
+    },
+    {
+      "name": "void at::native::vectorized_elementwise_kernel<4, at::native::(anonymous namespace)::launch_clamp_scalar(at::TensorIteratorBase&, c10::Scalar, c10::Scalar, at::native::detail::ClampLimits)::{lambda()#1}::operator()() const::{lambda()#8}::operator()() const::{lambda(c10::Half)#1}, std::array<char*, 2ul>, false>(int, at::native::(anonymous namespace)::launch_clamp_scalar(at::TensorIteratorBase&, c10::Scalar, c10::Scalar, at::native::detail::ClampLimits)::{lambda()#1}::operator()() const::{lambda()#8}::operator()() const::{lambda(c10::Half)#1}, std::array<char*, 2ul>)",
+      "calls": 590,
+      "gpu_milliseconds_per_step": 1.9642434999999752
+    }
+  ]
+}

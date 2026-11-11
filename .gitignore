@@ -1,0 +1,6 @@
+data/
+*.zip
+runs/**/*.pt
+__pycache__/
+slurm/logs/
+runs/discarded/

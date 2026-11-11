@@ -1,0 +1,4 @@
+pillow==13.0.0
+pydantic==2.14.3
+pytorch-metric-learning==3.0.2
+scikit-learn==1.9.1
