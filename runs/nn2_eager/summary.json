@@ -1,0 +1,21 @@
+{
+  "model": "nn2",
+  "pool_backend": "eager",
+  "compiled": false,
+  "epochs": 20,
+  "best_epoch": 14,
+  "best_validation_roc_auc": 0.8372600000000001,
+  "first_epoch_seconds": 17.822764345000905,
+  "later_epoch_seconds": 17.266557465263375,
+  "later_images_per_second": 867.3779873391132,
+  "peak_gpu_gibibytes": 2.192305564880371,
+  "lfw": {
+    "pairs": 6000,
+    "roc_auc": 0.7348998888888889,
+    "best_threshold_accuracy": 0.675,
+    "true_accept_rate_at_false_accept_rate": {
+      "0.001": 0.007666666666666666,
+      "0.01": 0.047
+    }
+  }
+}

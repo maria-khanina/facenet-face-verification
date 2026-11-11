@@ -3,3 +3,4 @@ data/
 runs/**/*.pt
 __pycache__/
 slurm/logs/
+runs/discarded/
