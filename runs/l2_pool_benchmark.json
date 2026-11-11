@@ -1,0 +1,98 @@
+[
+  {
+    "shape": [
+      128,
+      256,
+      20,
+      20
+    ],
+    "layers": 1,
+    "variants": [
+      {
+        "variant": "eager",
+        "milliseconds": 8.854533095108835,
+        "peak_extra_mebibytes": 325.0,
+        "output_error": 0.0,
+        "gradient_error": 0.0038928985595703125
+      },
+      {
+        "variant": "torch.compile",
+        "milliseconds": 2.4076111033811407,
+        "peak_extra_mebibytes": 200.0,
+        "output_error": 0.0,
+        "gradient_error": 0.0038928985595703125
+      },
+      {
+        "variant": "triton",
+        "milliseconds": 1.2132189969221752,
+        "peak_extra_mebibytes": 25.0,
+        "output_error": 0.001953125,
+        "gradient_error": 0.005809783935546875
+      }
+    ]
+  },
+  {
+    "shape": [
+      128,
+      640,
+      10,
+      10
+    ],
+    "layers": 4,
+    "variants": [
+      {
+        "variant": "eager",
+        "milliseconds": 4.90028022997307,
+        "peak_extra_mebibytes": 203.125,
+        "output_error": 0.0,
+        "gradient_error": 0.00389862060546875
+      },
+      {
+        "variant": "torch.compile",
+        "milliseconds": 2.3656115696347992,
+        "peak_extra_mebibytes": 125.0,
+        "output_error": 0.0,
+        "gradient_error": 0.00389862060546875
+      },
+      {
+        "variant": "triton",
+        "milliseconds": 0.6947623857280665,
+        "peak_extra_mebibytes": 15.625,
+        "output_error": 0.001953125,
+        "gradient_error": 0.005032539367675781
+      }
+    ]
+  },
+  {
+    "shape": [
+      128,
+      1024,
+      5,
+      5
+    ],
+    "layers": 1,
+    "variants": [
+      {
+        "variant": "eager",
+        "milliseconds": 1.3679770878803583,
+        "peak_extra_mebibytes": 81.25,
+        "output_error": 0.0,
+        "gradient_error": 0.0038080215454101562
+      },
+      {
+        "variant": "torch.compile",
+        "milliseconds": 0.749837307275924,
+        "peak_extra_mebibytes": 50.5,
+        "output_error": 0.0,
+        "gradient_error": 0.0038080215454101562
+      },
+      {
+        "variant": "triton",
+        "milliseconds": 0.25563912045571113,
+        "peak_extra_mebibytes": 6.25,
+        "output_error": 0.001953125,
+        "gradient_error": 0.006590843200683594
+      }
+    ]
+  }
+]
