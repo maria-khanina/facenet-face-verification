@@ -62,15 +62,13 @@ def build_training_loader(split: IdentitySplit) -> TrainingLoader:
         dataset.targets,
         SAMPLES_PER_IDENTITY,
         BATCH_SIZE,
-        len(dataset),
+        len(dataset) // BATCH_SIZE,
     )
     return DataLoader(
         dataset,
-        batch_size=BATCH_SIZE,
-        sampler=sampler,
+        batch_sampler=sampler,
         num_workers=LOADER_WORKERS,
         pin_memory=True,
-        drop_last=True,
     )
 
 

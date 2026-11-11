@@ -27,49 +27,34 @@ from face_verification.training_settings import (
     TRITON_WINDOW_RADIUS,
 )
 
-BlockPositions = tuple[
-    language.tensor,
-    language.tensor,
-    language.tensor,
-    language.tensor,
-]
+
+@triton.jit
+def block_offsets(BLOCK_SIZE: language.constexpr) -> language.tensor:
+    """Return the flat offsets of the elements of this block."""
+    return language.program_id(0) * BLOCK_SIZE + language.arange(0, BLOCK_SIZE)
 
 
 @triton.jit
-def locate_block(
-    height: int,
-    width: int,
+def neighbour_valid(
+    offsets: language.tensor,
     total: int,
-    BLOCK_SIZE: language.constexpr,
-) -> BlockPositions:
-    """Return the flat offsets, the in-range mask, the rows and columns of a block."""
-    offsets = language.program_id(0) * BLOCK_SIZE + language.arange(0, BLOCK_SIZE)
-    column = offsets % width
-    row = (offsets // width) % height
-    return offsets, offsets < total, row, column
-
-
-@triton.jit
-def locate_neighbour(
-    positions: BlockPositions,
     height: int,
     width: int,
     row_shift: language.constexpr,
     column_shift: language.constexpr,
-) -> tuple[language.tensor, language.tensor]:
-    """Return the flat offsets of a shifted position and whether it is in the map."""
-    offsets, inside, row, column = positions
-    neighbour_row = row + row_shift
-    neighbour_column = column + column_shift
-    valid = inside & (neighbour_row >= 0) & (neighbour_row < height)
-    valid = valid & (neighbour_column >= 0) & (neighbour_column < width)
-    return offsets + row_shift * width + column_shift, valid
+) -> language.tensor:
+    """Return whether the shifted position of every element lies in its map."""
+    neighbour_row = (offsets // width) % height + row_shift
+    neighbour_column = offsets % width + column_shift
+    valid = (offsets < total) & (neighbour_row >= 0) & (neighbour_row < height)
+    return valid & (neighbour_column >= 0) & (neighbour_column < width)
 
 
 @triton.jit
 def sum_window_squares(
     input_pointer: language.tensor,
-    positions: BlockPositions,
+    offsets: language.tensor,
+    total: int,
     height: int,
     width: int,
     BLOCK_SIZE: language.constexpr,
@@ -79,9 +64,10 @@ def sum_window_squares(
     squares = language.zeros([BLOCK_SIZE], dtype=language.float32)
     for row_shift in language.static_range(-RADIUS, RADIUS + 1):
         for column_shift in language.static_range(-RADIUS, RADIUS + 1):
-            shifted, valid = locate_neighbour(
-                positions, height, width, row_shift, column_shift
+            valid = neighbour_valid(
+                offsets, total, height, width, row_shift, column_shift
             )
+            shifted = offsets + row_shift * width + column_shift
             value = language.load(input_pointer + shifted, mask=valid, other=0.0)
             squares += value.to(language.float32) * value.to(language.float32)
     return squares
@@ -99,15 +85,15 @@ def l2_pool_forward_kernel(
     RADIUS: language.constexpr,
 ) -> None:
     """Write sqrt(sum of squares over the window + epsilon) for one block."""
-    positions = locate_block(height, width, total, BLOCK_SIZE)
+    offsets = block_offsets(BLOCK_SIZE)
     squares = sum_window_squares(
-        input_pointer, positions, height, width, BLOCK_SIZE, RADIUS
+        input_pointer, offsets, total, height, width, BLOCK_SIZE, RADIUS
     )
     result = language.sqrt(squares + epsilon)
     language.store(
-        output_pointer + positions[0],
+        output_pointer + offsets,
         result.to(output_pointer.dtype.element_ty),
-        mask=positions[1],
+        mask=offsets < total,
     )
 
 
@@ -128,7 +114,8 @@ def load_gradient_ratio(
 def sum_gradient_ratios(
     gradient_pointer: language.tensor,
     output_pointer: language.tensor,
-    positions: BlockPositions,
+    offsets: language.tensor,
+    total: int,
     height: int,
     width: int,
     BLOCK_SIZE: language.constexpr,
@@ -138,9 +125,10 @@ def sum_gradient_ratios(
     ratios = language.zeros([BLOCK_SIZE], dtype=language.float32)
     for row_shift in language.static_range(-RADIUS, RADIUS + 1):
         for column_shift in language.static_range(-RADIUS, RADIUS + 1):
-            shifted, valid = locate_neighbour(
-                positions, height, width, row_shift, column_shift
+            valid = neighbour_valid(
+                offsets, total, height, width, row_shift, column_shift
             )
+            shifted = offsets + row_shift * width + column_shift
             ratios += load_gradient_ratio(
                 gradient_pointer, output_pointer, shifted, valid
             )
@@ -160,25 +148,22 @@ def l2_pool_backward_kernel(
     RADIUS: language.constexpr,
 ) -> None:
     """Write x * sum(grad_output / output) over the neighbour windows."""
-    positions = locate_block(height, width, total, BLOCK_SIZE)
+    offsets = block_offsets(BLOCK_SIZE)
     ratios = sum_gradient_ratios(
         gradient_output_pointer,
         output_pointer,
-        positions,
+        offsets,
+        total,
         height,
         width,
         BLOCK_SIZE,
         RADIUS,
     )
-    features = language.load(
-        input_pointer + positions[0],
-        mask=positions[1],
-        other=0.0,
-    )
+    features = language.load(input_pointer + offsets, mask=offsets < total, other=0.0)
     language.store(
-        gradient_input_pointer + positions[0],
+        gradient_input_pointer + offsets,
         (features.to(language.float32) * ratios).to(features.dtype),
-        mask=positions[1],
+        mask=offsets < total,
     )
 
 

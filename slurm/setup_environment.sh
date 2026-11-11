@@ -8,7 +8,7 @@ python3 -m venv "${FACENET_VENV}"
 source "${FACENET_VENV}/bin/activate"
 pip install --quiet --upgrade pip
 pip install --quiet "torch==${TORCH_VERSION}" torchvision --index-url "${TORCH_INDEX_URL}"
-pip install --quiet pytorch-metric-learning scikit-learn pydantic pillow pytest
+pip install --quiet pytorch-metric-learning==3.0.2 scikit-learn pydantic pillow pytest
 python -c "import torch, torchvision, triton; print(torch.__version__, torchvision.__version__, triton.__version__, torch.cuda.is_available())"
 
 mkdir -p "${FACENET_DATA_DIRECTORY}"
