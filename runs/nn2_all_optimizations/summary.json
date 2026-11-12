@@ -1,0 +1,27 @@
+{
+  "model": "nn2",
+  "options": {
+    "pool_backend": "triton",
+    "merge_pointwise": true,
+    "compile_model": true,
+    "compile_optimizer": true,
+    "transfer_uint8": true,
+    "cudnn_benchmark": true
+  },
+  "epochs": 20,
+  "best_epoch": 18,
+  "best_validation_roc_auc": 0.832044,
+  "first_epoch_seconds": 26.651835987002414,
+  "later_epoch_seconds": 11.212484247474716,
+  "later_images_per_second": 1335.688024258253,
+  "peak_gpu_gibibytes": 2.255251884460449,
+  "lfw": {
+    "pairs": 6000,
+    "roc_auc": 0.6841853888888889,
+    "best_threshold_accuracy": 0.6318333333333334,
+    "true_accept_rate_at_false_accept_rate": {
+      "0.001": 0.010666666666666666,
+      "0.01": 0.059333333333333335
+    }
+  }
+}

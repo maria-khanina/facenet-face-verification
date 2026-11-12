@@ -6,25 +6,26 @@
       20,
       20
     ],
+    "precision": "fp16_autocast",
     "layers": 1,
     "variants": [
       {
         "variant": "eager",
-        "milliseconds": 8.854533095108835,
+        "milliseconds": 8.45217514038086,
         "peak_extra_mebibytes": 325.0,
         "output_error": 0.0,
         "gradient_error": 0.0038928985595703125
       },
       {
         "variant": "torch.compile",
-        "milliseconds": 2.4076111033811407,
+        "milliseconds": 2.667646738199087,
         "peak_extra_mebibytes": 200.0,
         "output_error": 0.0,
         "gradient_error": 0.0038928985595703125
       },
       {
         "variant": "triton",
-        "milliseconds": 1.2132189969221752,
+        "milliseconds": 1.2253231034420504,
         "peak_extra_mebibytes": 25.0,
         "output_error": 0.001953125,
         "gradient_error": 0.005809783935546875
@@ -38,25 +39,26 @@
       10,
       10
     ],
+    "precision": "fp16_autocast",
     "layers": 4,
     "variants": [
       {
         "variant": "eager",
-        "milliseconds": 4.90028022997307,
+        "milliseconds": 4.89276796579361,
         "peak_extra_mebibytes": 203.125,
         "output_error": 0.0,
         "gradient_error": 0.00389862060546875
       },
       {
         "variant": "torch.compile",
-        "milliseconds": 2.3656115696347992,
+        "milliseconds": 2.376230511814356,
         "peak_extra_mebibytes": 125.0,
         "output_error": 0.0,
         "gradient_error": 0.00389862060546875
       },
       {
         "variant": "triton",
-        "milliseconds": 0.6947623857280665,
+        "milliseconds": 0.7109241298129482,
         "peak_extra_mebibytes": 15.625,
         "output_error": 0.001953125,
         "gradient_error": 0.005032539367675781
@@ -70,28 +72,128 @@
       5,
       5
     ],
+    "precision": "fp16_autocast",
     "layers": 1,
     "variants": [
       {
         "variant": "eager",
-        "milliseconds": 1.3679770878803583,
+        "milliseconds": 1.3687778784904951,
         "peak_extra_mebibytes": 81.25,
         "output_error": 0.0,
         "gradient_error": 0.0038080215454101562
       },
       {
         "variant": "torch.compile",
-        "milliseconds": 0.749837307275924,
+        "milliseconds": 0.7573260340774268,
         "peak_extra_mebibytes": 50.5,
         "output_error": 0.0,
         "gradient_error": 0.0038080215454101562
       },
       {
         "variant": "triton",
-        "milliseconds": 0.25563912045571113,
+        "milliseconds": 0.26302005021603075,
         "peak_extra_mebibytes": 6.25,
         "output_error": 0.001953125,
         "gradient_error": 0.006590843200683594
+      }
+    ]
+  },
+  {
+    "shape": [
+      128,
+      256,
+      20,
+      20
+    ],
+    "precision": "float32",
+    "layers": 1,
+    "variants": [
+      {
+        "variant": "eager",
+        "milliseconds": 6.783957748413086,
+        "peak_extra_mebibytes": 200.0,
+        "output_error": 0.0,
+        "gradient_error": 0.0
+      },
+      {
+        "variant": "torch.compile",
+        "milliseconds": 4.306631420933923,
+        "peak_extra_mebibytes": 150.0,
+        "output_error": 0.0,
+        "gradient_error": 1.9073486328125e-06
+      },
+      {
+        "variant": "triton",
+        "milliseconds": 1.4225284556547801,
+        "peak_extra_mebibytes": 50.0,
+        "output_error": 9.5367431640625e-07,
+        "gradient_error": 2.86102294921875e-06
+      }
+    ]
+  },
+  {
+    "shape": [
+      128,
+      640,
+      10,
+      10
+    ],
+    "precision": "float32",
+    "layers": 4,
+    "variants": [
+      {
+        "variant": "eager",
+        "milliseconds": 4.277893318070306,
+        "peak_extra_mebibytes": 125.0,
+        "output_error": 0.0,
+        "gradient_error": 0.0
+      },
+      {
+        "variant": "torch.compile",
+        "milliseconds": 2.4753868310682234,
+        "peak_extra_mebibytes": 93.75,
+        "output_error": 0.0,
+        "gradient_error": 1.9073486328125e-06
+      },
+      {
+        "variant": "triton",
+        "milliseconds": 0.8880043041247588,
+        "peak_extra_mebibytes": 31.25,
+        "output_error": 9.5367431640625e-07,
+        "gradient_error": 1.9073486328125e-06
+      }
+    ]
+  },
+  {
+    "shape": [
+      128,
+      1024,
+      5,
+      5
+    ],
+    "precision": "float32",
+    "layers": 1,
+    "variants": [
+      {
+        "variant": "eager",
+        "milliseconds": 1.1966969246088073,
+        "peak_extra_mebibytes": 50.5,
+        "output_error": 0.0,
+        "gradient_error": 0.0
+      },
+      {
+        "variant": "torch.compile",
+        "milliseconds": 0.751560904668725,
+        "peak_extra_mebibytes": 37.5,
+        "output_error": 0.0,
+        "gradient_error": 1.9073486328125e-06
+      },
+      {
+        "variant": "triton",
+        "milliseconds": 0.339117681158,
+        "peak_extra_mebibytes": 13.0,
+        "output_error": 4.76837158203125e-07,
+        "gradient_error": 1.9073486328125e-06
       }
     ]
   }

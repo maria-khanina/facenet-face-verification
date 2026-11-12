@@ -8,6 +8,7 @@ the GPU and read once per epoch, so steps do not wait for the host.
 import copy
 from dataclasses import dataclass
 import time
+from typing import Any
 
 from pydantic import BaseModel
 from pytorch_metric_learning import losses, miners
@@ -16,7 +17,7 @@ from torch import nn
 from torch.amp.grad_scaler import GradScaler
 from torch.optim.lr_scheduler import LinearLR
 
-from face_verification.loaders import PairsLoader, TrainingLoader
+from face_verification.loaders import PairsLoader, TrainingLoader, to_model_input
 from face_verification.training_settings import (
     FALSE_ACCEPT_RATES,
     TRIPLET_MARGIN,
@@ -68,23 +69,47 @@ class TrainingOutcome:
     best_state: StateDictionary
 
 
+def build_optimizer(
+    model: nn.Module,
+    hyperparameters: TrainingHyperparameters,
+    compile_optimizer: bool,
+) -> torch.optim.AdamW:
+    """Create AdamW; for a compiled step the learning rate is kept in a tensor.
+
+    The warmup schedule then changes a value instead of forcing a
+    recompilation of the step.
+    """
+    learning_rate = hyperparameters.learning_rate
+    return torch.optim.AdamW(
+        model.parameters(),
+        lr=torch.tensor(learning_rate) if compile_optimizer else learning_rate,
+        weight_decay=hyperparameters.weight_decay,
+    )
+
+
+def compile_step(optimizer: torch.optim.AdamW) -> None:
+    """Replace the step, already wrapped by the schedule, by a compiled one."""
+    compiler: Any = getattr(torch, "compile")
+    setattr(optimizer, "step", compiler(getattr(optimizer, "step")))
+
+
 def build_training_parts(
     model: nn.Module,
     hyperparameters: TrainingHyperparameters,
+    compile_optimizer: bool,
 ) -> TrainingParts:
     """Create the optimizer, the warmup schedule, the scaler and the loss."""
-    optimizer = torch.optim.AdamW(
-        model.parameters(),
-        lr=hyperparameters.learning_rate,
-        weight_decay=hyperparameters.weight_decay,
+    optimizer = build_optimizer(model, hyperparameters, compile_optimizer)
+    scheduler = LinearLR(
+        optimizer,
+        start_factor=WARMUP_START_FACTOR,
+        total_iters=hyperparameters.warmup_epochs,
     )
+    if compile_optimizer:
+        compile_step(optimizer)
     return TrainingParts(
         optimizer=optimizer,
-        scheduler=LinearLR(
-            optimizer,
-            start_factor=WARMUP_START_FACTOR,
-            total_iters=hyperparameters.warmup_epochs,
-        ),
+        scheduler=scheduler,
         scaler=GradScaler("cuda"),
         miner=miners.TripletMarginMiner(TRIPLET_MARGIN, "semihard"),
         loss=losses.TripletMarginLoss(TRIPLET_MARGIN),
@@ -123,7 +148,7 @@ def train_one_epoch(
     for images, labels in loader:
         loss = train_step(
             model,
-            images.to(device, non_blocking=True),
+            to_model_input(images, device),
             labels.to(device, non_blocking=True),
             parts,
         )
@@ -174,9 +199,10 @@ def run_training(
     model: nn.Module,
     loaders: tuple[TrainingLoader, PairsLoader],
     hyperparameters: TrainingHyperparameters,
+    compile_optimizer: bool,
 ) -> TrainingOutcome:
     """Train for all epochs and keep the weights of the best validation ROC AUC."""
-    parts = build_training_parts(model, hyperparameters)
+    parts = build_training_parts(model, hyperparameters, compile_optimizer)
     outcome = TrainingOutcome(history=[], best_state=copy_state(model))
     best_roc_auc = -1.0
     for epoch in range(1, hyperparameters.epochs + 1):

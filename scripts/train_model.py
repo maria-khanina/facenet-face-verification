@@ -19,13 +19,19 @@ import torch
 from torch import nn
 
 from face_verification.identity_split import load_split
-from face_verification.layers import PoolBackend
 from face_verification.loaders import (
     build_lfw_loader,
     build_training_loader,
     build_validation_loader,
 )
 from face_verification.networks import ModelName, build_model
+from face_verification.speed_options import (
+    SpeedOptions,
+    add_speed_arguments,
+    apply_global_options,
+    compile_when_asked,
+    read_speed_options,
+)
 from face_verification.training_loop import (
     EpochRecord,
     TrainingHyperparameters,
@@ -55,8 +61,7 @@ class RunSummary(BaseModel):
     """Configuration, speed, memory and test scores of one run."""
 
     model: str
-    pool_backend: str
-    compiled: bool
+    options: SpeedOptions
     epochs: int
     best_epoch: int
     best_validation_roc_auc: float
@@ -68,11 +73,10 @@ class RunSummary(BaseModel):
 
 
 def parse_arguments() -> argparse.Namespace:
-    """Read the model, the pooling backend, compilation and the run name."""
+    """Read the model, the optimizations, the epochs and the run name."""
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", choices=["nn2", "resnet"], required=True)
-    parser.add_argument("--pool-backend", choices=["eager", "triton"], required=True)
-    parser.add_argument("--compile", action="store_true")
+    add_speed_arguments(parser)
     parser.add_argument("--epochs", type=int, default=EPOCHS)
     parser.add_argument("--run-name", required=True)
     return parser.parse_args()
@@ -95,15 +99,15 @@ def choose_hyperparameters(model: ModelName, epochs: int) -> TrainingHyperparame
     )
 
 
-def prepare_model(arguments: argparse.Namespace, device: torch.device) -> nn.Module:
+def prepare_model(
+    arguments: argparse.Namespace,
+    options: SpeedOptions,
+    device: torch.device,
+) -> nn.Module:
     """Build the network on the device and compile it when asked."""
     model_name = cast(ModelName, arguments.model)
-    backend = cast(PoolBackend, arguments.pool_backend)
-    model = build_model(model_name, backend).to(device)
-    if arguments.compile:
-        compiled = torch.compile(model)  # pyright: ignore[reportUnknownMemberType]
-        return cast(nn.Module, compiled)
-    return model
+    built = build_model(model_name, options.pool_backend, options.merge_pointwise)
+    return compile_when_asked(built.to(device), options)
 
 
 def find_best_epoch(history: list[EpochRecord]) -> EpochRecord:
@@ -113,6 +117,7 @@ def find_best_epoch(history: list[EpochRecord]) -> EpochRecord:
 
 def summarize(
     arguments: argparse.Namespace,
+    options: SpeedOptions,
     outcome: TrainingOutcome,
     lfw: VerificationScores,
 ) -> RunSummary:
@@ -121,8 +126,7 @@ def summarize(
     best = find_best_epoch(outcome.history)
     return RunSummary(
         model=arguments.model,
-        pool_backend=arguments.pool_backend,
-        compiled=arguments.compile,
+        options=options,
         epochs=len(outcome.history),
         best_epoch=best.epoch,
         best_validation_roc_auc=best.validation.roc_auc,
@@ -153,18 +157,44 @@ def write_results(
     torch.save(model.state_dict(), directory / "best.pt")
 
 
+def train(
+    arguments: argparse.Namespace,
+    options: SpeedOptions,
+    model: nn.Module,
+) -> TrainingOutcome:
+    """Train on the Pins training identities and validate on the held-out ones."""
+    split = load_split(SPLIT_PATH)
+    uint8 = options.transfer_uint8
+    loaders = (
+        build_training_loader(split, uint8),
+        build_validation_loader(split, uint8),
+    )
+    hyperparameters = choose_hyperparameters(arguments.model, arguments.epochs)
+    return run_training(model, loaders, hyperparameters, options.compile_optimizer)
+
+
+def test_on_lfw(
+    model: nn.Module,
+    options: SpeedOptions,
+    device: torch.device,
+) -> VerificationScores:
+    """Score the restored best weights on the LFW pairs."""
+    lfw_loader = build_lfw_loader(options.transfer_uint8)
+    return evaluate_verification(model, lfw_loader, device, FALSE_ACCEPT_RATES)
+
+
 def main() -> None:
     """Train, restore the best validation weights and test on LFW."""
     arguments = parse_arguments()
+    options = read_speed_options(arguments)
+    apply_global_options(options)
     device = torch.device("cuda")
-    split = load_split(SPLIT_PATH)
-    model = prepare_model(arguments, device)
-    loaders = (build_training_loader(split), build_validation_loader(split))
-    hyperparameters = choose_hyperparameters(arguments.model, arguments.epochs)
-    outcome = run_training(model, loaders, hyperparameters)
+    model = prepare_model(arguments, options, device)
+    outcome = train(arguments, options, model)
     model.load_state_dict(outcome.best_state)
-    lfw = evaluate_verification(model, build_lfw_loader(), device, FALSE_ACCEPT_RATES)
-    write_results(arguments, model, outcome, summarize(arguments, outcome, lfw))
+    lfw = test_on_lfw(model, options, device)
+    summary = summarize(arguments, options, outcome, lfw)
+    write_results(arguments, model, outcome, summary)
 
 
 if __name__ == "__main__":

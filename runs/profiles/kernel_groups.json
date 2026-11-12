@@ -1,0 +1,85 @@
+{
+  "all_optimizations": {
+    "batch norm with fused neighbours": 27.19,
+    "L2 pooling": 4.3,
+    "max pooling": 8.46,
+    "convolutions (cuDNN and cuBLAS)": 32.23,
+    "host-to-GPU batch copy": 2.2,
+    "other": 5.05,
+    "optimizer": 0.12
+  },
+  "compiled": {
+    "host-to-GPU batch copy": 9.93,
+    "batch norm with fused neighbours": 25.52,
+    "max pooling": 10.85,
+    "convolutions (cuDNN and cuBLAS)": 36.29,
+    "L2 pooling": 5.09,
+    "other": 2.83,
+    "optimizer": 2.41
+  },
+  "compiled_cudnn_benchmark": {
+    "host-to-GPU batch copy": 9.68,
+    "batch norm with fused neighbours": 25.7,
+    "convolutions (cuDNN and cuBLAS)": 31.03,
+    "max pooling": 11.0,
+    "L2 pooling": 5.1,
+    "other": 2.91,
+    "optimizer": 2.41
+  },
+  "compiled_merged_pointwise": {
+    "host-to-GPU batch copy": 11.16,
+    "convolutions (cuDNN and cuBLAS)": 33.73,
+    "batch norm with fused neighbours": 27.96,
+    "max pooling": 8.6,
+    "L2 pooling": 3.67,
+    "other": 2.6,
+    "optimizer": 2.41
+  },
+  "compiled_optimizer": {
+    "host-to-GPU batch copy": 9.33,
+    "batch norm with fused neighbours": 25.44,
+    "max pooling": 10.94,
+    "convolutions (cuDNN and cuBLAS)": 35.95,
+    "L2 pooling": 5.08,
+    "other": 3.62,
+    "optimizer": 0.14
+  },
+  "compiled_triton": {
+    "host-to-GPU batch copy": 9.51,
+    "batch norm with fused neighbours": 26.98,
+    "max pooling": 11.3,
+    "L2 pooling": 4.14,
+    "convolutions (cuDNN and cuBLAS)": 36.11,
+    "other": 2.96,
+    "optimizer": 2.42
+  },
+  "compiled_uint8": {
+    "batch norm with fused neighbours": 25.52,
+    "max pooling": 10.87,
+    "convolutions (cuDNN and cuBLAS)": 36.51,
+    "host-to-GPU batch copy": 2.37,
+    "L2 pooling": 5.08,
+    "other": 4.04,
+    "optimizer": 2.41
+  },
+  "eager": {
+    "host-to-GPU batch copy": 11.08,
+    "NCHW/NHWC conversions": 12.32,
+    "max pooling": 12.51,
+    "L2 pooling": 10.77,
+    "other": 37.44,
+    "convolutions (cuDNN and cuBLAS)": 35.2,
+    "batch norm with fused neighbours": 10.72,
+    "optimizer": 2.33
+  },
+  "eager_triton": {
+    "host-to-GPU batch copy": 9.9,
+    "NCHW/NHWC conversions": 12.35,
+    "max pooling": 12.74,
+    "other": 18.3,
+    "convolutions (cuDNN and cuBLAS)": 36.01,
+    "L2 pooling": 7.89,
+    "batch norm with fused neighbours": 10.76,
+    "optimizer": 2.32
+  }
+}
