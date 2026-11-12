@@ -13,7 +13,7 @@ from sklearn.metrics import auc, roc_curve
 import torch
 from torch import nn
 
-from face_verification.loaders import PairsLoader
+from face_verification.loaders import PairsLoader, to_model_input
 
 Distances = NDArray[numpy.float32]
 Labels = NDArray[numpy.int64]
@@ -39,7 +39,8 @@ def compute_distances(
     labels: list[Labels] = []
     with torch.no_grad():
         for first, second, pair_labels in loader:
-            gap = model(first.to(device)) - model(second.to(device))
+            embeddings = model(to_model_input(first, device))
+            gap = embeddings - model(to_model_input(second, device))
             distances.append(gap.norm(p=2, dim=1).float().cpu().numpy())
             labels.append(pair_labels.numpy())
     return numpy.concatenate(distances), numpy.concatenate(labels)

@@ -8,7 +8,7 @@ GPU time. Writes runs/profiles/<run name>/summary.json and operators.txt.
 Usage (from the repository root):
   python -m scripts.profile_training_step --pool-backend eager --run-name eager
   python -m scripts.profile_training_step --pool-backend triton --compile \
-      --run-name triton_compiled
+      --compile-optimizer --transfer-uint8 --cudnn-benchmark --run-name all
 """
 import argparse
 from collections.abc import Callable, Iterable, Iterator
@@ -27,9 +27,15 @@ from torch.profiler import (
 )
 
 from face_verification.identity_split import load_split
-from face_verification.layers import PoolBackend
-from face_verification.loaders import build_training_loader
+from face_verification.loaders import build_training_loader, to_model_input
 from face_verification.networks import FaceNetNN2
+from face_verification.speed_options import (
+    SpeedOptions,
+    add_speed_arguments,
+    apply_global_options,
+    compile_when_asked,
+    read_speed_options,
+)
 from face_verification.training_loop import (
     TrainingHyperparameters,
     TrainingParts,
@@ -75,8 +81,7 @@ class OperatorTime(BaseModel):
 class ProfileSummary(BaseModel):
     """Step timing, memory and the most expensive operators of one setup."""
 
-    pool_backend: str
-    compiled: bool
+    options: SpeedOptions
     timed_steps: int
     data_wait_seconds: float
     gpu_step_seconds: float
@@ -85,28 +90,27 @@ class ProfileSummary(BaseModel):
 
 
 def parse_arguments() -> argparse.Namespace:
-    """Read the pooling backend, compilation and the run name."""
+    """Read the optimizations to switch on and the run name."""
     parser = argparse.ArgumentParser()
-    parser.add_argument("--pool-backend", choices=["eager", "triton"], required=True)
-    parser.add_argument("--compile", action="store_true")
+    add_speed_arguments(parser)
     parser.add_argument("--run-name", required=True)
     return parser.parse_args()
 
 
-def prepare(arguments: argparse.Namespace) -> tuple[nn.Module, TrainingParts]:
-    """Build the network, compile it when asked, and its optimizer parts."""
-    model: nn.Module = FaceNetNN2(cast(PoolBackend, arguments.pool_backend)).cuda()
+def prepare(options: SpeedOptions) -> tuple[nn.Module, TrainingParts]:
+    """Build the network and its optimizer parts with the chosen options."""
+    apply_global_options(options)
+    model: nn.Module = FaceNetNN2(
+        options.pool_backend, options.merge_pointwise
+    ).cuda()
     hyperparameters = TrainingHyperparameters(
         learning_rate=NN2_LEARNING_RATE,
         weight_decay=NN2_WEIGHT_DECAY,
         warmup_epochs=NN2_WARMUP_EPOCHS,
         epochs=1,
     )
-    parts = build_training_parts(model, hyperparameters)
-    if arguments.compile:
-        compiled = torch.compile(model)  # pyright: ignore[reportUnknownMemberType]
-        model = cast(nn.Module, compiled)
-    return model.train(), parts
+    parts = build_training_parts(model, hyperparameters, options.compile_optimizer)
+    return compile_when_asked(model, options).train(), parts
 
 
 def run_steps(
@@ -121,7 +125,8 @@ def run_steps(
         started = time.perf_counter()
         images, labels = next(batches)
         loaded = time.perf_counter()
-        train_step(model, images.cuda(non_blocking=True), labels.cuda(), parts)
+        inputs = to_model_input(images, torch.device("cuda"))
+        train_step(model, inputs, labels.cuda(), parts)
         torch.cuda.synchronize()
         timings.append((loaded - started, time.perf_counter() - loaded))
     return timings
@@ -167,14 +172,13 @@ def rank_operators(profiler: profile) -> list[OperatorTime]:
 
 
 def summarize(
-    arguments: argparse.Namespace,
+    options: SpeedOptions,
     timings: list[tuple[float, float]],
     operators: list[OperatorTime],
 ) -> ProfileSummary:
     """Collect the mean timings, the peak memory and the ranked operators."""
     return ProfileSummary(
-        pool_backend=arguments.pool_backend,
-        compiled=arguments.compile,
+        options=options,
         timed_steps=len(timings),
         data_wait_seconds=statistics.mean(wait for wait, _ in timings),
         gpu_step_seconds=statistics.mean(step for _, step in timings),
@@ -199,13 +203,15 @@ def write_summary(arguments: argparse.Namespace, summary: ProfileSummary) -> Non
 def main() -> None:
     """Warm up, time steps, profile steps and write the results."""
     arguments = parse_arguments()
-    model, parts = prepare(arguments)
-    batches = iter(build_training_loader(load_split(SPLIT_PATH)))
+    options = read_speed_options(arguments)
+    model, parts = prepare(options)
+    split = load_split(SPLIT_PATH)
+    batches = iter(build_training_loader(split, options.transfer_uint8))
     run_steps(model, parts, batches, COMPILE_WARMUP_STEPS)
     torch.cuda.reset_peak_memory_stats()
     timings = run_steps(model, parts, batches, PROFILE_TIMED_STEPS)
     operators = profile_steps(model, parts, batches)
-    write_summary(arguments, summarize(arguments, timings, operators))
+    write_summary(arguments, summarize(options, timings, operators))
 
 
 if __name__ == "__main__":

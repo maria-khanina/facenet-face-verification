@@ -28,74 +28,32 @@ The notebook code is split into the `face_verification` package. All numbers liv
 | Command | What it does |
 |---|---|
 | `python -m scripts.split_identities` | splits the 105 training identities into 90 for training and 15 for validation (`splits/pins_identity_split.json`), so validation pairs show people the model has not seen |
-| `python -m scripts.train_model --model nn2 --pool-backend triton --compile --run-name <name>` | trains and evaluates on LFW; writes `runs/<name>/history.json` and `summary.json` |
-| `python -m scripts.profile_training_step --pool-backend eager [--compile]` | times data loading against GPU work over 30 steps, then ranks operators by GPU time with `torch.profiler` (`runs/profiles/<name>/`) |
-| `python -m scripts.benchmark_l2_pool` | times L2 pooling alone (forward and backward) at the input shapes of the network (`runs/l2_pool_benchmark.json`) |
+| `python -m scripts.train_model --model nn2 --pool-backend eager --run-name <name>` | trains and evaluates on LFW; writes `runs/<name>/history.json` and `summary.json` |
+| `python -m scripts.profile_training_step --pool-backend eager --run-name <name>` | times data loading against GPU work over 30 steps, then ranks kernels by GPU time with `torch.profiler` (`runs/profiles/<name>/`) |
+| `python -m scripts.summarize_profiles` | groups the kernel time of every saved profile (`runs/profiles/kernel_groups.json`) |
+| `python -m scripts.benchmark_l2_pool` | times L2 pooling alone in fp16 autocast and in float32 (`runs/l2_pool_benchmark.json`) |
+
+Training and profiling take switches for each speed optimization: `--compile`, `--pool-backend triton`, `--transfer-uint8`, `--cudnn-benchmark`, `--compile-optimizer`, `--merge-pointwise`.
 
 Validation and LFW pairs are drawn with fixed seeds, so every run is scored on the same pairs. The best-threshold accuracy counts a pair whose distance equals the threshold as the same person, as `roc_curve` does; the notebook used a strict comparison.
 
-`slurm/` runs the experiments as Slurm jobs on a single-GPU node inside WSL2: `setup_environment.sh` creates the environment and copies the data to the Linux file system, and `submit_experiments.sh` queues the tests, the benchmark, four profiles and two training runs.
+`slurm/` runs the experiments as Slurm jobs on a single-GPU node inside WSL2: `setup_environment.sh` creates the environment and copies the data to the Linux file system, and `submit_experiments.sh` queues the tests, the kernel benchmark, the profiles and two training runs.
 
-## Training speed: profiling, torch.compile and a fused Triton kernel
+## Training speed
 
-Measured on an 8 GB laptop GPU (24 streaming multiprocessors, compute capability 8.9) with batch 128, fp16 autocast and 160×160 images.
+Profiling the eager step, then the step under torch.compile, points to what is left to optimize; each optimization is measured on top of torch.compile and then all together (8 GB laptop GPU, batch 128, fp16 autocast):
 
-### Where the time goes
-
-`torch.profiler` on the eager step (139 ms on the GPU) shows that data loading is not the bottleneck: the loader waits about 5 ms per step. Convolutions take the largest share (forward and backward together about 52 ms). The rest are memory-bound kernels:
-
-- conversions between the NCHW and NHWC layouts around cuDNN convolutions;
-- max pooling backward;
-- batch normalization;
-- the L2 pooling chain, which runs in float32: autocast keeps `pow` in float32, so the window sum and its backward read and write float32 tensors.
-
-### A fused L2 pooling kernel
-
-L2 pooling with a 3×3 window, stride 1 and padding 1 computes y = sqrt(sum of x² over the window + ε). In eager mode this is three kernels forward and three backward, and autograd keeps the squared input for the backward pass. `face_verification/l2_pool_triton.py` replaces them with one Triton kernel each way:
-
-- **Forward:** loads the window, sums the squares in float32 registers and writes only y in the input dtype.
-- **Backward:** uses ∂y_w/∂x_i = x_i / y_w. The input gradient is x_i times the sum of grad_y / y over the 3×3 neighbours of i. Every program writes its own elements, so no atomic additions are needed, and only x and y are kept for backward.
-
-Tests compare the output and the input gradient with the eager version in float32 and float16.
-
-L2 pooling alone, forward and backward, batch 128:
-
-| Input shape (layers) | Eager | torch.compile | Triton | Extra memory: eager / compile / Triton |
-|---|---|---|---|---|
-| 256×20×20 (1) | 8.85 ms | 2.41 ms | **1.21 ms** | 325 / 200 / 25 MiB |
-| 640×10×10 (4) | 4.90 ms | 2.37 ms | **0.69 ms** | 203 / 125 / 16 MiB |
-| 1024×5×5 (1) | 1.37 ms | 0.75 ms | **0.26 ms** | 81 / 51 / 6 MiB |
-
-Part of the gain over eager comes from writing float16 instead of float32.
-
-### The whole training step
-
-| Variant | GPU time per step | Peak GPU memory |
+| Variant | GPU time per step | Peak memory |
 |---|---|---|
-| eager | 138.8 ms | 2.16 GiB |
-| Triton L2 pooling | 114.2 ms (−18%) | 1.60 GiB |
-| torch.compile | 102.4 ms (−26%) | 1.38 GiB |
-| torch.compile with Triton L2 pooling | 103.5 ms (−25%) | **1.02 GiB** |
+| eager | 141.6 ms | 2.16 GiB |
+| torch.compile | 104.9 ms | 1.39 GiB |
+| torch.compile + uint8 batch transfer, cuDNN benchmark, compiled optimizer step, merged 1×1 convolutions, fused Triton L2 pooling | **92.0 ms** | **1.04 GiB** |
 
-What the numbers show:
+- torch.compile fuses element-wise work and batch norm with its neighbours, removes the concatenation copies and keeps activations channels-last, so the layout conversions around cuDNN disappear.
+- The four optimizations aimed at the remaining costs save 2–6 ms each; the fused L2 pooling kernels (`face_verification/l2_pool_triton.py`, registered with `torch.library.triton_op` and layout-independent) remove 19% of the eager step, and under torch.compile cut peak memory by a quarter at the same speed.
+- Full training: 11.2 s per epoch against 17.4 s in eager, with the same LFW score.
 
-- **Without compilation**, the kernel alone removes 18% of the step. That is more than the time of the L2 pooling kernels themselves, because the float32 copies around the chain also disappear.
-- **Under torch.compile** the kernel does not make the step faster. Inductor already fuses the eager chain, and the remaining time is in cuDNN convolutions, which Inductor calls as external kernels and cannot fuse with their neighbours. The kernel still cuts peak memory by 26% compared with compilation alone.
-- **A pitfall under compilation.** A first version of the kernel ran five times slower inside the compiled graph (1.65 ms instead of 0.33 ms for one forward call). Inductor passed the float `epsilon` argument as fp64, so the sum and the square root ran in double precision, which is slow on consumer GPUs; eager Triton launches pass Python floats as fp32. ε is now a compile-time constant (`tl.constexpr`).
-- **Still open:** Inductor also fills the output buffer of the user kernel with NaN before every call, an extra full write per layer.
-
-### Full training runs
-
-Twenty epochs each:
-
-| Variant | Seconds per epoch | Images per second | Peak GPU memory | Best validation ROC AUC | LFW ROC AUC |
-|---|---|---|---|---|---|
-| eager | 17.3 | 867 | 2.19 GiB | 0.837 | 0.735 |
-| torch.compile with Triton L2 pooling | 13.1 | 1140 | 1.08 GiB | 0.835 | 0.701 |
-
-The first compiled epoch takes 23 s because of compilation. Training order is not seeded, so one run per variant cannot separate an effect of the variant on accuracy from run-to-run variation.
-
-Under WSL2, pinned host memory for the data loader fails with `cuMemHostAlloc` out of memory, so `PIN_LOADER_MEMORY` is off; all numbers above are measured with it off.
+Profiles, the analysis of the compiled graph, the remaining costs and the kernel design are in [docs/training_performance.md](docs/training_performance.md).
 
 ## Tests, style and types
 

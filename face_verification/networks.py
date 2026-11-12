@@ -64,19 +64,20 @@ def build_stem() -> nn.Sequential:
 def build_inception_stage(
     layouts: tuple[InceptionLayout, ...],
     backend: PoolBackend,
+    merge_pointwise: bool,
 ) -> list[nn.Module]:
     """Return the inception modules of one stage."""
-    return [NN2Inception(layout, backend) for layout in layouts]
+    return [NN2Inception(layout, backend, merge_pointwise) for layout in layouts]
 
 
-def build_inception_body(backend: PoolBackend) -> nn.Sequential:
+def build_inception_body(backend: PoolBackend, merge_pointwise: bool) -> nn.Sequential:
     """Return the three inception stages with their reduction modules."""
     modules: list[nn.Module] = [
-        *build_inception_stage(INCEPTION_STAGE_THREE, backend),
-        InceptionReduction(REDUCTION_STAGE_THREE),
-        *build_inception_stage(INCEPTION_STAGE_FOUR, backend),
-        InceptionReduction(REDUCTION_STAGE_FOUR),
-        *build_inception_stage(INCEPTION_STAGE_FIVE, backend),
+        *build_inception_stage(INCEPTION_STAGE_THREE, backend, merge_pointwise),
+        InceptionReduction(REDUCTION_STAGE_THREE, merge_pointwise),
+        *build_inception_stage(INCEPTION_STAGE_FOUR, backend, merge_pointwise),
+        InceptionReduction(REDUCTION_STAGE_FOUR, merge_pointwise),
+        *build_inception_stage(INCEPTION_STAGE_FIVE, backend, merge_pointwise),
     ]
     return nn.Sequential(*modules)
 
@@ -84,11 +85,11 @@ def build_inception_body(backend: PoolBackend) -> nn.Sequential:
 class FaceNetNN2(nn.Module):
     """FaceNet NN2 that maps a face image to an L2-normalized embedding."""
 
-    def __init__(self, backend: PoolBackend) -> None:
+    def __init__(self, backend: PoolBackend, merge_pointwise: bool) -> None:
         """Create the stem, the inception body and the embedding layer."""
         super().__init__()  # pyright: ignore[reportUnknownMemberType]
         self.stem = build_stem()
-        self.body = build_inception_body(backend)
+        self.body = build_inception_body(backend, merge_pointwise)
         self.average_pool = nn.AdaptiveAvgPool2d((1, 1))
         self.full_layer = nn.Linear(FINAL_CHANNELS, EMBEDDING_SIZE)
 
@@ -113,8 +114,12 @@ class PretrainedFaceResNet(nn.Module):
         return functional.normalize(self.backbone(images), p=2.0, dim=1)
 
 
-def build_model(name: ModelName, backend: PoolBackend) -> nn.Module:
+def build_model(
+    name: ModelName,
+    backend: PoolBackend,
+    merge_pointwise: bool,
+) -> nn.Module:
     """Return a fresh embedding network of the given kind."""
     if name == "resnet":
         return PretrainedFaceResNet()
-    return FaceNetNN2(backend)
+    return FaceNetNN2(backend, merge_pointwise)

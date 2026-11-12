@@ -84,23 +84,44 @@ def pointwise_convolution(in_channels: int, out_channels: int) -> BasicConv2d:
     return BasicConv2d(in_channels, out_channels, 1, 1, 0)
 
 
-def reduced_convolution(
+class PointwiseBranches(nn.Module):
+    """The 1x1 convolutions that start several branches from the same input.
+
+    Merged, they are one convolution with all output channels, split after
+    batch normalization and ReLU; both act per channel, so the result is the
+    same as separate convolutions while the input is read once.
+    """
+
+    def __init__(
+        self,
+        in_channels: int,
+        out_channels: tuple[int, ...],
+        merged: bool,
+    ) -> None:
+        """Create one merged convolution or one convolution per branch."""
+        super().__init__()  # pyright: ignore[reportUnknownMemberType]
+        self.split_sizes: list[int] = list(out_channels)
+        self.merged = merged
+        widths: list[int] = [sum(out_channels)] if merged else list(out_channels)
+        self.convolutions = nn.ModuleList(
+            [pointwise_convolution(in_channels, width) for width in widths]
+        )
+
+    def forward(self, features: torch.Tensor) -> list[torch.Tensor]:
+        """Return the output of every branch."""
+        if self.merged:
+            merged = self.convolutions[0](features)
+            return list(torch.split(merged, self.split_sizes, dim=1))
+        return [convolution(features) for convolution in self.convolutions]
+
+
+def spatial_convolution(
     in_channels: int,
-    reduced_channels: int,
     out_channels: int,
     stride: int,
-) -> nn.Sequential:
-    """Return a 1x1 reduction followed by a 3x3 convolution."""
-    return nn.Sequential(
-        pointwise_convolution(in_channels, reduced_channels),
-        BasicConv2d(
-            reduced_channels,
-            out_channels,
-            SMALL_KERNEL,
-            stride,
-            SMALL_PADDING,
-        ),
-    )
+) -> BasicConv2d:
+    """Return the 3x3 convolution that follows a 1x1 reduction."""
+    return BasicConv2d(in_channels, out_channels, SMALL_KERNEL, stride, SMALL_PADDING)
 
 
 class L2Pool(nn.Module):
@@ -131,13 +152,20 @@ def build_pool_layer(pool_type: PoolType, backend: PoolBackend) -> nn.Module:
 class NN2Inception(nn.Module):
     """Inception module with 1x1, 3x3, 5x5 and pool branches."""
 
-    def __init__(self, layout: InceptionLayout, backend: PoolBackend) -> None:
+    def __init__(
+        self,
+        layout: InceptionLayout,
+        backend: PoolBackend,
+        merge_pointwise: bool,
+    ) -> None:
         """Create the four branches from the module layout."""
         super().__init__()  # pyright: ignore[reportUnknownMemberType]
         channels, single, reduce3, out3, reduce5, out5, projection, pool = layout
-        self.branch1x1 = pointwise_convolution(channels, single)
-        self.branch3x3 = reduced_convolution(channels, reduce3, out3, 1)
-        self.branch5x5 = reduced_convolution(channels, reduce5, out5, 1)
+        self.pointwise = PointwiseBranches(
+            channels, (single, reduce3, reduce5), merge_pointwise
+        )
+        self.convolution3x3 = spatial_convolution(reduce3, out3, 1)
+        self.convolution5x5 = spatial_convolution(reduce5, out5, 1)
         self.branch_pool = nn.Sequential(
             build_pool_layer(pool, backend),
             pointwise_convolution(channels, projection),
@@ -145,10 +173,11 @@ class NN2Inception(nn.Module):
 
     def forward(self, features: torch.Tensor) -> torch.Tensor:
         """Concatenate the outputs of the branches along the channels."""
+        single, reduced3, reduced5 = self.pointwise(features)
         branches: list[torch.Tensor] = [
-            self.branch1x1(features),
-            self.branch3x3(features),
-            self.branch5x5(features),
+            single,
+            self.convolution3x3(reduced3),
+            self.convolution5x5(reduced5),
             self.branch_pool(features),
         ]
         return torch.cat(branches, dim=1)
@@ -157,12 +186,15 @@ class NN2Inception(nn.Module):
 class InceptionReduction(nn.Module):
     """Inception module that halves the spatial size."""
 
-    def __init__(self, layout: ReductionLayout) -> None:
+    def __init__(self, layout: ReductionLayout, merge_pointwise: bool) -> None:
         """Create the strided 3x3, 5x5 and max pool branches."""
         super().__init__()  # pyright: ignore[reportUnknownMemberType]
         channels, reduce3, out3, reduce5, out5 = layout
-        self.branch3x3 = reduced_convolution(channels, reduce3, out3, REDUCTION_STRIDE)
-        self.branch5x5 = reduced_convolution(channels, reduce5, out5, REDUCTION_STRIDE)
+        self.pointwise = PointwiseBranches(
+            channels, (reduce3, reduce5), merge_pointwise
+        )
+        self.convolution3x3 = spatial_convolution(reduce3, out3, REDUCTION_STRIDE)
+        self.convolution5x5 = spatial_convolution(reduce5, out5, REDUCTION_STRIDE)
         self.branch_pool = nn.MaxPool2d(
             SMALL_KERNEL,
             stride=REDUCTION_STRIDE,
@@ -171,9 +203,10 @@ class InceptionReduction(nn.Module):
 
     def forward(self, features: torch.Tensor) -> torch.Tensor:
         """Concatenate the outputs of the branches along the channels."""
+        reduced3, reduced5 = self.pointwise(features)
         branches: list[torch.Tensor] = [
-            self.branch3x3(features),
-            self.branch5x5(features),
+            self.convolution3x3(reduced3),
+            self.convolution5x5(reduced5),
             self.branch_pool(features),
         ]
         return torch.cat(branches, dim=1)

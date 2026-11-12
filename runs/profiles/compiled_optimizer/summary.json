@@ -1,0 +1,2016 @@
+{
+  "options": {
+    "pool_backend": "eager",
+    "merge_pointwise": false,
+    "compile_model": true,
+    "compile_optimizer": true,
+    "transfer_uint8": false,
+    "cudnn_benchmark": false
+  },
+  "timed_steps": 30,
+  "data_wait_seconds": 0.004697104967635824,
+  "gpu_step_seconds": 0.1028044628331069,
+  "peak_gpu_gibibytes": 1.3844342231750488,
+  "top_operators": [
+    {
+      "name": "ProfilerStep*",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 105.57865100000001
+    },
+    {
+      "name": "aten::convolution_backward",
+      "calls": 590,
+      "gpu_milliseconds_per_step": 25.174441199999997
+    },
+    {
+      "name": "aten::cudnn_convolution",
+      "calls": 590,
+      "gpu_milliseconds_per_step": 10.9937957000001
+    },
+    {
+      "name": "aten::copy_",
+      "calls": 310,
+      "gpu_milliseconds_per_step": 9.453803999999977
+    },
+    {
+      "name": "Memcpy HtoD (Pageable -> Device)",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 9.334214000000005
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_159",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 3.724141599999959
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_159",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 3.724141599999959
+    },
+    {
+      "name": "triton_poi_fused_max_pool2d_with_indices_max_pool2d_with_indices_backward_155",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 3.147866099999995
+    },
+    {
+      "name": "triton_poi_fused_max_pool2d_with_indices_max_pool2d_with_indices_backward_155",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 3.147866099999995
+    },
+    {
+      "name": "triton_poi_fused_add_max_pool2d_with_indices_max_pool2d_with_indices_backward_145",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 3.1389925000000236
+    },
+    {
+      "name": "triton_poi_fused_add_max_pool2d_with_indices_max_pool2d_with_indices_backward_145",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 3.1389925000000236
+    },
+    {
+      "name": "sm80_xmma_dgrad_implicit_gemm_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize128x128x32_stage4_warpsize2x2x1_g1_tensor16x8x16_execute_kernel__5x_cudnn",
+      "calls": 110,
+      "gpu_milliseconds_per_step": 3.0175979999999973
+    },
+    {
+      "name": "sm80_xmma_wgrad_implicit_gemm_indexed_wo_smem_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize32x16x64_stage1_warpsize2x1x1_g1_tensor16x8x16_aligna2_alignc2_execute_kernel__5x_cudnn",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 2.9038076000000075
+    },
+    {
+      "name": "sm80_xmma_dgrad_implicit_gemm_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize256x64x32_stage3_warpsize4x1x1_g1_tensor16x8x16_execute_kernel__5x_cudnn",
+      "calls": 60,
+      "gpu_milliseconds_per_step": 2.863444999999967
+    },
+    {
+      "name": "sm80_xmma_wgrad_implicit_gemm_indexed_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize256x128x32_stage3_warpsize4x2x1_g1_tensor16x8x16_execute_kernel__5x_cudnn",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 2.835038500000001
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_max_pool2d_with_indices_backward_native_batch_norm_backward_relu_threshold_backward_156",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 2.2538152000000045
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_max_pool2d_with_indices_backward_native_batch_norm_backward_relu_threshold_backward_156",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 2.2538152000000045
+    },
+    {
+      "name": "triton_poi_fused__to_copy_add_avg_pool2d_backward_div_mul_pow_sqrt_74",
+      "calls": 40,
+      "gpu_milliseconds_per_step": 2.1375255999999747
+    },
+    {
+      "name": "triton_poi_fused__to_copy_add_avg_pool2d_backward_div_mul_pow_sqrt_74",
+      "calls": 40,
+      "gpu_milliseconds_per_step": 2.1375255999999747
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_149",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 1.9865180999999983
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_149",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 1.9865180999999983
+    },
+    {
+      "name": "sm80_xmma_fprop_implicit_gemm_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize256x64x32_stage3_warpsize4x1x1_g1_tensor16x8x16_t1r3s3_execute_kernel__5x_cudnn",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 1.888733699999996
+    },
+    {
+      "name": "sm80_xmma_wgrad_implicit_gemm_indexed_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize64x32x64_stage5_warpsize2x2x1_g1_tensor16x8x16_execute_kernel__5x_cudnn",
+      "calls": 200,
+      "gpu_milliseconds_per_step": 1.774815399999991
+    },
+    {
+      "name": "sm80_xmma_dgrad_implicit_gemm_indexed_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize128x128x64_stage3_warpsize2x2x1_g1_tensor16x8x16_execute_kernel__5x_cudnn",
+      "calls": 110,
+      "gpu_milliseconds_per_step": 1.7383801000000065
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_max_pool2d_with_indices_backward_native_batch_norm_backward_relu_threshold_backward_146",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 1.6335517999999998
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_max_pool2d_with_indices_backward_native_batch_norm_backward_relu_threshold_backward_146",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 1.6335517999999998
+    },
+    {
+      "name": "sm80_xmma_fprop_image_first_layer_f16f16_f32_f16_nhwckrsc_nhwc_hmma_k64c4r7s7_stride2x2_tile16x64x64_tensor1688_execute_kernel_kernel__5x_cudnn",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 1.411387799999993
+    },
+    {
+      "name": "triton_poi_fused__to_copy_add_avg_pool2d_sqrt_80",
+      "calls": 40,
+      "gpu_milliseconds_per_step": 1.322310899999972
+    },
+    {
+      "name": "triton_poi_fused__to_copy_add_avg_pool2d_sqrt_80",
+      "calls": 40,
+      "gpu_milliseconds_per_step": 1.322310899999972
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_157",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 1.3145253000000128
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_157",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 1.3145253000000128
+    },
+    {
+      "name": "ampere_fp16_s16816gemm_fp16_128x64_ldg8_f2f_stages_64x3_nt",
+      "calls": 80,
+      "gpu_milliseconds_per_step": 1.2995390999999379
+    },
+    {
+      "name": "sm80_xmma_wgrad_implicit_gemm_indexed_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize64x128x32_stage5_warpsize2x2x1_g1_tensor16x8x16_execute_kernel__5x_cudnn",
+      "calls": 30,
+      "gpu_milliseconds_per_step": 1.2982981999999785
+    },
+    {
+      "name": "triton_poi_fused__to_copy_add_div_mul_sqrt_73",
+      "calls": 40,
+      "gpu_milliseconds_per_step": 1.1070174000000648
+    },
+    {
+      "name": "triton_poi_fused__to_copy_add_div_mul_sqrt_73",
+      "calls": 40,
+      "gpu_milliseconds_per_step": 1.1070174000000648
+    },
+    {
+      "name": "triton_poi_fused_max_pool2d_with_indices_max_pool2d_with_indices_backward_slice_115",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 1.0893086000000178
+    },
+    {
+      "name": "triton_poi_fused_max_pool2d_with_indices_max_pool2d_with_indices_backward_slice_115",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 1.0893086000000178
+    },
+    {
+      "name": "sm80_xmma_fprop_implicit_gemm_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize128x32x32_stage4_warpsize4x1x1_g1_tensor16x8x16_execute_kernel__5x_cudnn",
+      "calls": 120,
+      "gpu_milliseconds_per_step": 1.0843197000000444
+    },
+    {
+      "name": "triton_poi_fused_max_pool2d_with_indices_max_pool2d_with_indices_backward_143",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 1.0464889000000097
+    },
+    {
+      "name": "triton_poi_fused_max_pool2d_with_indices_max_pool2d_with_indices_backward_143",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 1.0464889000000097
+    },
+    {
+      "name": "sm80_xmma_wgrad_implicit_gemm_indexed_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize128x128x64_stage3_warpsize2x2x2_g1_tensor16x8x16_execute_kernel__5x_cudnn",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 1.0433624000000041
+    },
+    {
+      "name": "sm80_xmma_fprop_implicit_gemm_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize256x64x32_stage3_warpsize4x1x1_g1_tensor16x8x16_execute_kernel__5x_cudnn",
+      "calls": 40,
+      "gpu_milliseconds_per_step": 1.0432020000000248
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_147",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 1.010107199999997
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_147",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 1.010107199999997
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_5",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.8806683999999849
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_5",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.8806683999999849
+    },
+    {
+      "name": "triton_poi_fused__to_copy_add_avg_pool2d_backward_div_mul_pow_sqrt_131",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.8242222999999955
+    },
+    {
+      "name": "triton_poi_fused__to_copy_add_avg_pool2d_backward_div_mul_pow_sqrt_131",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.8242222999999955
+    },
+    {
+      "name": "sm80_xmma_wgrad_implicit_gemm_indexed_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize64x32x64_stage5_warpsize2x2x1_g1_tensor16x8x16_t1r1s1_execute_kernel__5x_cudnn",
+      "calls": 70,
+      "gpu_milliseconds_per_step": 0.7764323999999914
+    },
+    {
+      "name": "triton_poi_fused_max_pool2d_with_indices_max_pool2d_with_indices_backward_154",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.7582628999999623
+    },
+    {
+      "name": "triton_poi_fused_max_pool2d_with_indices_max_pool2d_with_indices_backward_154",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.7582628999999623
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional__to_copy_cat_pow_relu_88",
+      "calls": 30,
+      "gpu_milliseconds_per_step": 0.7012854999999912
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional__to_copy_cat_pow_relu_88",
+      "calls": 30,
+      "gpu_milliseconds_per_step": 0.7012854999999912
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_max_pool2d_with_indices_relu_6",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.6711058000000183
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_max_pool2d_with_indices_relu_6",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.6711058000000183
+    },
+    {
+      "name": "sm80_xmma_fprop_implicit_gemm_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize256x128x32_stage3_warpsize4x2x1_g1_tensor16x8x16_t1r3s3_execute_kernel__5x_cudnn",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.6502483999999972
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_15",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.6459537000000194
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_15",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.6459537000000194
+    },
+    {
+      "name": "ampere_fp16_s1688gemm_fp16_128x128_ldg8_f2f_stages_32x1_nn",
+      "calls": 100,
+      "gpu_milliseconds_per_step": 0.6235076000000583
+    },
+    {
+      "name": "void cutlass__5x_cudnn::Kernel<cutlass_tensorop_f16_s16816dgrad_optimized_f16_128x256_32x3_nhwc_align8>(cutlass_tensorop_f16_s16816dgrad_optimized_f16_128x256_32x3_nhwc_align8::Params)",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.6186830000000141
+    },
+    {
+      "name": "void cutlass::Kernel2<cutlass_80_tensorop_f16_s16816gemm_relu_f16_64x64_32x6_tn_align8>(cutlass_80_tensorop_f16_s16816gemm_relu_f16_64x64_32x6_tn_align8::Params)",
+      "calls": 60,
+      "gpu_milliseconds_per_step": 0.611358000000042
+    },
+    {
+      "name": "sm80_xmma_wgrad_implicit_gemm_indexed_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize64x64x64_stage4_warpsize2x2x1_g1_tensor16x8x16_execute_kernel__5x_cudnn",
+      "calls": 40,
+      "gpu_milliseconds_per_step": 0.5956164999999994
+    },
+    {
+      "name": "triton_poi_fused_add_max_pool2d_with_indices_max_pool2d_with_indices_backward_144",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.5830052999999855
+    },
+    {
+      "name": "triton_poi_fused_add_max_pool2d_with_indices_max_pool2d_with_indices_backward_144",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.5830052999999855
+    },
+    {
+      "name": "ampere_fp16_s16816gemm_fp16_64x128_ldg8_f2f_stages_64x3_nt",
+      "calls": 30,
+      "gpu_milliseconds_per_step": 0.5828065999999992
+    },
+    {
+      "name": "sm80_xmma_fprop_implicit_gemm_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize128x128x64_stage3_warpsize2x2x1_g1_tensor16x8x16_execute_kernel__5x_cudnn",
+      "calls": 30,
+      "gpu_milliseconds_per_step": 0.5469858000000237
+    },
+    {
+      "name": "triton_poi_fused__to_copy_add_avg_pool2d_sqrt_51",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.5314142999999844
+    },
+    {
+      "name": "triton_poi_fused__to_copy_add_avg_pool2d_sqrt_51",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.5314142999999844
+    },
+    {
+      "name": "sm80_xmma_fprop_implicit_gemm_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize128x128x32_stage4_warpsize2x2x1_g1_tensor16x8x16_execute_kernel__5x_cudnn",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.5253884000000101
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_max_pool2d_with_indices_relu_16",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.5195513000000072
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_max_pool2d_with_indices_relu_16",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.5195513000000072
+    },
+    {
+      "name": "triton_poi_fused__to_copy_add_div_mul_sqrt_130",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.5137944000000091
+    },
+    {
+      "name": "triton_poi_fused__to_copy_add_div_mul_sqrt_130",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.5137944000000091
+    },
+    {
+      "name": "void cutlass__5x_cudnn::Kernel<cutlass_tensorop_f16_s16816fprop_optimized_f16_64x64_64x5_nhwc_align8>(cutlass_tensorop_f16_s16816fprop_optimized_f16_64x64_64x5_nhwc_align8::Params)",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.45981940000002836
+    },
+    {
+      "name": "sm80_xmma_fprop_implicit_gemm_indexed_wo_smem_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize128x32x64_stage1_warpsize4x1x1_g1_tensor16x8x16_alignc8_execute_kernel__5x_cudnn",
+      "calls": 70,
+      "gpu_milliseconds_per_step": 0.42239149999996084
+    },
+    {
+      "name": "ampere_fp16_s1688gemm_fp16_128x128_ldg8_f2f_tn",
+      "calls": 30,
+      "gpu_milliseconds_per_step": 0.42136739999999445
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional__to_copy_cat_pow_relu_44",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.409789699999983
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional__to_copy_cat_pow_relu_44",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.409789699999983
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_threshold_backward_153",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.40334150000000085
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_threshold_backward_153",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.40334150000000085
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_2",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.39096999999999754
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_2",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.39096999999999754
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_124",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.3883781999999774
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_124",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.3883781999999774
+    },
+    {
+      "name": "sm80_xmma_fprop_implicit_gemm_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize64x64x64_stage4_warpsize2x2x1_g1_tensor16x8x16_execute_kernel__5x_cudnn",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.38600029999998736
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_add_max_pool2d_with_indices_backward_native_batch_norm_backward_relu_slice_threshold_backward_122",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.3582238999999885
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_add_max_pool2d_with_indices_backward_native_batch_norm_backward_relu_slice_threshold_backward_122",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.3582238999999885
+    },
+    {
+      "name": "sm80_xmma_dgrad_implicit_gemm_indexed_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize128x256x32_stage3_warpsize2x4x1_g1_tensor16x8x16_execute_kernel__5x_cudnn",
+      "calls": 40,
+      "gpu_milliseconds_per_step": 0.34788780000004627
+    },
+    {
+      "name": "void cutlass__5x_cudnn::Kernel<cutlass_tensorop_f16_s16816fprop_optimized_f16_128x64_32x6_nhwc_align8>(cutlass_tensorop_f16_s16816fprop_optimized_f16_128x64_32x6_nhwc_align8::Params)",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.34671649999999354
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_threshold_backward_150",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.3398683000000063
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_threshold_backward_150",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.3398683000000063
+    },
+    {
+      "name": "ampere_fp16_s1688gemm_fp16_128x128_ldg8_f2f_stages_32x1_nt",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.32499150000003213
+    },
+    {
+      "name": "triton_poi_fused_max_pool2d_with_indices_max_pool2d_with_indices_backward_slice_48",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.3111989999999845
+    },
+    {
+      "name": "triton_poi_fused_max_pool2d_with_indices_max_pool2d_with_indices_backward_slice_48",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.3111989999999845
+    },
+    {
+      "name": "sm80_xmma_dgrad_implicit_gemm_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize128x64x32_stage5_warpsize2x2x1_g1_tensor16x8x16_execute_kernel__5x_cudnn",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.3105718000000023
+    },
+    {
+      "name": "void nhwcAddPaddingKernel<__half, __half, float, true, (cudnnKernelDataType_t)0>(int, int, int, int, int, int, int, int, __half const*, __half*, int, int, int, int, float, float, cudnn::reduced_divisor, cudnn::reduced_divisor, cudnn::reduced_divisor)",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.29695890000000946
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_13",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.29445960000000376
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_13",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.29445960000000376
+    },
+    {
+      "name": "sm80_xmma_wgrad_implicit_gemm_indexed_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize256x64x32_stage3_warpsize4x1x1_g1_tensor16x8x16_execute_kernel__5x_cudnn",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.2870932000000212
+    },
+    {
+      "name": "sm80_xmma_dgrad_implicit_gemm_indexed_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize256x32x32_stage4_warpsize4x1x1_g1_tensor16x8x16_execute_kernel__5x_cudnn",
+      "calls": 60,
+      "gpu_milliseconds_per_step": 0.28708899999999266
+    },
+    {
+      "name": "sm80_xmma_wgrad_implicit_gemm_indexed_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize64x64x64_stage4_warpsize2x2x1_g1_tensor16x8x16_t1r1s1_execute_kernel__5x_cudnn",
+      "calls": 40,
+      "gpu_milliseconds_per_step": 0.2864500999999677
+    },
+    {
+      "name": "sm80_xmma_wgrad_implicit_gemm_indexed_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize128x128x32_stage4_warpsize2x2x1_g1_tensor16x8x16_execute_kernel__5x_cudnn",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.28394420000000536
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_threshold_backward_128",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.2739376999999673
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_threshold_backward_128",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.2739376999999673
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_cat_relu_54",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.27363050000000516
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_cat_relu_54",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.27363050000000516
+    },
+    {
+      "name": "triton_poi_fused__to_copy_1",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.25370679999999773
+    },
+    {
+      "name": "triton_poi_fused__to_copy_1",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.25370679999999773
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_123",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.2525739999999991
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_123",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.2525739999999991
+    },
+    {
+      "name": "triton_poi_fused_max_pool2d_with_indices_39",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.229370499999986
+    },
+    {
+      "name": "triton_poi_fused_max_pool2d_with_indices_39",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.229370499999986
+    },
+    {
+      "name": "void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_128x1_tn_align8>(cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_128x1_tn_align8::Params)",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.2263371000000043
+    },
+    {
+      "name": "sm80_xmma_fprop_implicit_gemm_indexed_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize64x64x64_stage4_warpsize2x2x1_g1_tensor16x8x16_execute_kernel__5x_cudnn",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.22446500000001798
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_threshold_backward_125",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.22358449999996374
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_threshold_backward_125",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.22358449999996374
+    },
+    {
+      "name": "triton_poi_fused_max_pool2d_with_indices_max_pool2d_with_indices_backward_22",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.2200483999999866
+    },
+    {
+      "name": "triton_poi_fused_max_pool2d_with_indices_max_pool2d_with_indices_backward_22",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.2200483999999866
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_add_max_pool2d_with_indices_backward_native_batch_norm_backward_relu_slice_threshold_backward_61",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.21603890000000467
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_add_max_pool2d_with_indices_backward_native_batch_norm_backward_relu_slice_threshold_backward_61",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.21603890000000467
+    },
+    {
+      "name": "Memset (Device)",
+      "calls": 800,
+      "gpu_milliseconds_per_step": 0.20188709999990478
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_cat_max_pool2d_with_indices_relu_64",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.1957154999999868
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_cat_max_pool2d_with_indices_relu_64",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.1957154999999868
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_add_max_pool2d_with_indices_backward_native_batch_norm_backward_relu_slice_threshold_backward_121",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.19149119999999822
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_add_max_pool2d_with_indices_backward_native_batch_norm_backward_relu_slice_threshold_backward_121",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.19149119999999822
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_threshold_backward_113",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.1839614999999918
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_threshold_backward_113",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.1839614999999918
+    },
+    {
+      "name": "ampere_fp16_s16816gemm_fp16_128x64_ldg8_f2f_nn",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.18265260000002018
+    },
+    {
+      "name": "triton_poi_fused_max_pool2d_with_indices_max_pool2d_with_indices_backward_slice_114",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.18234900000002527
+    },
+    {
+      "name": "triton_poi_fused_max_pool2d_with_indices_max_pool2d_with_indices_backward_slice_114",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.18234900000002527
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_native_batch_norm_backward_relu_slice_threshold_backward_136",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.18208629999997794
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_native_batch_norm_backward_relu_slice_threshold_backward_136",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.18208629999997794
+    },
+    {
+      "name": "triton_for_fused_11",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.18173760000001057
+    },
+    {
+      "name": "triton_for_fused_11",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.18173760000001057
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_threshold_backward_110",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.18040949999999503
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_threshold_backward_110",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.18040949999999503
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_add_max_pool2d_with_indices_backward_native_batch_norm_backward_relu_slice_threshold_backward_116",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.1802879999999903
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_add_max_pool2d_with_indices_backward_native_batch_norm_backward_relu_slice_threshold_backward_116",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.1802879999999903
+    },
+    {
+      "name": "triton_poi_fused__to_copy_add_avg_pool2d_backward_div_mul_pow_sqrt_32",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.17905589999999794
+    },
+    {
+      "name": "triton_poi_fused__to_copy_add_avg_pool2d_backward_div_mul_pow_sqrt_32",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.17905589999999794
+    },
+    {
+      "name": "void cutlass__5x_cudnn::Kernel<cutlass_tensorop_f16_s16816dgrad_optimized_f16_128x128_32x4_nhwc_align8>(cutlass_tensorop_f16_s16816dgrad_optimized_f16_128x128_32x4_nhwc_align8::Params)",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.17771489999999832
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_11",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.1722366000000053
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_11",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.1722366000000053
+    },
+    {
+      "name": "triton_for_fused_10",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.1672893999999913
+    },
+    {
+      "name": "triton_for_fused_10",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.1672893999999913
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_add_max_pool2d_with_indices_backward_native_batch_norm_backward_relu_slice_threshold_backward_129",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.16339809999999852
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_add_max_pool2d_with_indices_backward_native_batch_norm_backward_relu_slice_threshold_backward_129",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.16339809999999852
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_native_batch_norm_backward_relu_slice_threshold_backward_104",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.15437399999994741
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_native_batch_norm_backward_relu_slice_threshold_backward_104",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.15437399999994741
+    },
+    {
+      "name": "triton_poi_fused__to_copy_pow_79",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.15217560000000996
+    },
+    {
+      "name": "triton_poi_fused__to_copy_pow_79",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.15217560000000996
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_120",
+      "calls": 40,
+      "gpu_milliseconds_per_step": 0.1486934000000081
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_120",
+      "calls": 40,
+      "gpu_milliseconds_per_step": 0.1486934000000081
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_52",
+      "calls": 30,
+      "gpu_milliseconds_per_step": 0.14407260000001917
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_52",
+      "calls": 30,
+      "gpu_milliseconds_per_step": 0.14407260000001917
+    },
+    {
+      "name": "void at::native::(anonymous namespace)::multi_tensor_apply_kernel<at::native::(anonymous namespace)::TensorListMetadata<1>, at::native::(anonymous namespace)::UnaryOpFunctor<float, 1, 1, 0>, at::native::_amp_foreach_non_finite_check_and_unscale_cuda_(c10::ArrayRef<at::Tensor>, at::Tensor&, at::Tensor const&)::{lambda()#1}::operator()() const::{lambda()#2}::operator()() const::{lambda(float)#1}>(at::native::(anonymous namespace)::TensorListMetadata<1>, at::native::(anonymous namespace)::UnaryOpFunctor<float, 1, 1, 0>, at::native::_amp_foreach_non_finite_check_and_unscale_cuda_(c10::ArrayRef<at::Tensor>, at::Tensor&, at::Tensor const&)::{lambda()#1}::operator()() const::{lambda()#2}::operator()() const::{lambda(float)#1})",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.1361624999999811
+    },
+    {
+      "name": "aten::_amp_foreach_non_finite_check_and_unscale_",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.1361624999999811
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_117",
+      "calls": 40,
+      "gpu_milliseconds_per_step": 0.12325660000000062
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_117",
+      "calls": 40,
+      "gpu_milliseconds_per_step": 0.12325660000000062
+    },
+    {
+      "name": "void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_16x16_128x2_nt_align8>(cutlass_80_wmma_tensorop_f16_s161616gemm_f16_16x16_128x2_nt_align8::Params)",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.1197493000000337
+    },
+    {
+      "name": "triton_for_fused_9",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.11877009999999283
+    },
+    {
+      "name": "triton_for_fused_9",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.11877009999999283
+    },
+    {
+      "name": "ampere_fp16_s1688gemm_fp16_64x128_sliced1x2_ldg8_f2f_tn",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.11758600000001243
+    },
+    {
+      "name": "sm80_xmma_dgrad_implicit_gemm_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize64x32x64_stage5_warpsize2x2x1_g1_tensor16x8x16_execute_kernel__5x_cudnn",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.11411369999997478
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_add_max_pool2d_with_indices_backward_native_batch_norm_backward_relu_slice_threshold_backward_70",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.11393800000001429
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_add_max_pool2d_with_indices_backward_native_batch_norm_backward_relu_slice_threshold_backward_70",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.11393800000001429
+    },
+    {
+      "name": "triton_poi_fused__to_copy_add_div_mul_sqrt_31",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.11097159999999713
+    },
+    {
+      "name": "triton_poi_fused__to_copy_add_div_mul_sqrt_31",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.11097159999999713
+    },
+    {
+      "name": "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1} const&)::{lambda(int)#1})",
+      "calls": 220,
+      "gpu_milliseconds_per_step": 0.11077409999999946
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_8",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.10403699999999044
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_8",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.10403699999999044
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_native_batch_norm_backward_relu_slice_threshold_backward_75",
+      "calls": 30,
+      "gpu_milliseconds_per_step": 0.1007952999999572
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_native_batch_norm_backward_relu_slice_threshold_backward_75",
+      "calls": 30,
+      "gpu_milliseconds_per_step": 0.1007952999999572
+    },
+    {
+      "name": "sm80_xmma_wgrad_implicit_gemm_indexed_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize128x64x32_stage5_warpsize2x2x1_g1_tensor16x8x16_execute_kernel__5x_cudnn",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.10061930000000939
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_42",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.09724970000001376
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_42",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.09724970000001376
+    },
+    {
+      "name": "sm80_xmma_dgrad_implicit_gemm_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize256x32x32_stage4_warpsize4x1x1_g1_tensor16x8x16_execute_kernel__5x_cudnn",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.09651689999998489
+    },
+    {
+      "name": "triton_poi_fused_max_pool2d_with_indices_max_pool2d_with_indices_backward_142",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.09557920000000013
+    },
+    {
+      "name": "triton_poi_fused_max_pool2d_with_indices_max_pool2d_with_indices_backward_142",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.09557920000000013
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_81",
+      "calls": 30,
+      "gpu_milliseconds_per_step": 0.09530160000000397
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_81",
+      "calls": 30,
+      "gpu_milliseconds_per_step": 0.09530160000000397
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_native_batch_norm_backward_relu_slice_threshold_backward_77",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.0901361999999972
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_native_batch_norm_backward_relu_slice_threshold_backward_77",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.0901361999999972
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_84",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.08716009999996932
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_84",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.08716009999996932
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_add_max_pool2d_with_indices_backward_relu_slice_threshold_backward_27",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.08597279999999155
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_add_max_pool2d_with_indices_backward_relu_slice_threshold_backward_27",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.08597279999999155
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_53",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.08517910000000593
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_53",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.08517910000000593
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_87",
+      "calls": 40,
+      "gpu_milliseconds_per_step": 0.08358610000002119
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_87",
+      "calls": 40,
+      "gpu_milliseconds_per_step": 0.08358610000002119
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_32",
+      "calls": 30,
+      "gpu_milliseconds_per_step": 0.08123069999997243
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_32",
+      "calls": 30,
+      "gpu_milliseconds_per_step": 0.08123069999997243
+    },
+    {
+      "name": "ampere_fp16_s1688gemm_fp16_128x128_ldg8_f2f_stages_32x1_tn",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.08076649999998335
+    },
+    {
+      "name": "triton_poi_fused__to_copy_add_avg_pool2d_sqrt_141",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.08050990000000384
+    },
+    {
+      "name": "triton_poi_fused__to_copy_add_avg_pool2d_sqrt_141",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.08050990000000384
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_97",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.0803662999999935
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_97",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.0803662999999935
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_native_batch_norm_backward_relu_slice_threshold_backward_141",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.07988290000001144
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_native_batch_norm_backward_relu_slice_threshold_backward_141",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.07988290000001144
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_native_batch_norm_backward_relu_slice_threshold_backward_89",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.07949909999998273
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_native_batch_norm_backward_relu_slice_threshold_backward_89",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.07949909999998273
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_add_max_pool2d_with_indices_backward_relu_slice_threshold_backward_30",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.07802080000001224
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_add_max_pool2d_with_indices_backward_relu_slice_threshold_backward_30",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.07802080000001224
+    },
+    {
+      "name": "triton_for_fused_5",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.07726249999999855
+    },
+    {
+      "name": "triton_for_fused_5",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.07726249999999855
+    },
+    {
+      "name": "void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_32x1_nn_align8>(cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_32x1_nn_align8::Params)",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.07676629999999714
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_add_max_pool2d_with_indices_backward_native_batch_norm_backward_relu_slice_threshold_backward_49",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.07599809999999635
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_add_max_pool2d_with_indices_backward_native_batch_norm_backward_relu_slice_threshold_backward_49",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.07599809999999635
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_18",
+      "calls": 40,
+      "gpu_milliseconds_per_step": 0.07468929999998072
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_18",
+      "calls": 40,
+      "gpu_milliseconds_per_step": 0.07468929999998072
+    },
+    {
+      "name": "triton_poi_fused_max_pool2d_with_indices_146",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.07463159999999043
+    },
+    {
+      "name": "triton_poi_fused_max_pool2d_with_indices_146",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.07463159999999043
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_78",
+      "calls": 30,
+      "gpu_milliseconds_per_step": 0.07424099999998944
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_78",
+      "calls": 30,
+      "gpu_milliseconds_per_step": 0.07424099999998944
+    },
+    {
+      "name": "sm80_xmma_fprop_implicit_gemm_indexed_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize64x32x64_stage5_warpsize2x2x1_g1_tensor16x8x16_execute_kernel__5x_cudnn",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.07260579999999754
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_threshold_backward_109",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.0707146000000248
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_threshold_backward_109",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.0707146000000248
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_native_batch_norm_backward_relu_slice_threshold_backward_98",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.06997549999997354
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_native_batch_norm_backward_relu_slice_threshold_backward_98",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.06997549999997354
+    },
+    {
+      "name": "triton_for_fused_8",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.0693227999999901
+    },
+    {
+      "name": "triton_for_fused_8",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.0693227999999901
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_85",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.06827340000002223
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_85",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.06827340000002223
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_native_batch_norm_backward_relu_slice_threshold_backward_99",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.06780270000003075
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_native_batch_norm_backward_relu_slice_threshold_backward_99",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.06780270000003075
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_cat_relu_113",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.06589859999998444
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_cat_relu_113",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.06589859999998444
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_threshold_backward_43",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.06544429999999775
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_threshold_backward_43",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.06544429999999775
+    },
+    {
+      "name": "triton_poi_fused_add_copy__151",
+      "calls": 590,
+      "gpu_milliseconds_per_step": 0.06494429999989589
+    },
+    {
+      "name": "triton_poi_fused_add_copy__151",
+      "calls": 590,
+      "gpu_milliseconds_per_step": 0.06494429999989589
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_threshold_backward_46",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.06376109999999535
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_threshold_backward_46",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.06376109999999535
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_143",
+      "calls": 40,
+      "gpu_milliseconds_per_step": 0.06373550000001633
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_143",
+      "calls": 40,
+      "gpu_milliseconds_per_step": 0.06373550000001633
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_native_batch_norm_backward_relu_slice_threshold_backward_76",
+      "calls": 30,
+      "gpu_milliseconds_per_step": 0.062129100000027394
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_native_batch_norm_backward_relu_slice_threshold_backward_76",
+      "calls": 30,
+      "gpu_milliseconds_per_step": 0.062129100000027394
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_native_batch_norm_backward_relu_slice_threshold_backward_84",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.062058800000010524
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_native_batch_norm_backward_relu_slice_threshold_backward_84",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.062058800000010524
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_65",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.06162659999999887
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_65",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.06162659999999887
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_86",
+      "calls": 40,
+      "gpu_milliseconds_per_step": 0.06150529999995488
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_86",
+      "calls": 40,
+      "gpu_milliseconds_per_step": 0.06150529999995488
+    },
+    {
+      "name": "triton_for_fused_6",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.06131940000000323
+    },
+    {
+      "name": "triton_for_fused_6",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.06131940000000323
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_threshold_backward_106",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.05994029999998384
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_threshold_backward_106",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.05994029999998384
+    },
+    {
+      "name": "void at_cuda_detail::cub::detail::radix_sort::DeviceRadixSortOnesweepKernel<at_cuda_detail::cub::detail::radix::policy_hub<long, at::cuda::cub::detail::OpaqueType<8>, unsigned long long>::Policy1000, (at_cuda_detail::cub::SortOrder)0, long, at::cuda::cub::detail::OpaqueType<8>, unsigned long long, int, int, at_cuda_detail::cub::detail::identity_decomposer_t>(int*, int*, unsigned long long*, unsigned long long const*, long*, long const*, at::cuda::cub::detail::OpaqueType<8>*, at::cuda::cub::detail::OpaqueType<8> const*, int, int, int, at_cuda_detail::cub::detail::identity_decomposer_t)",
+      "calls": 120,
+      "gpu_milliseconds_per_step": 0.05940849999999991
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_25",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.05912440000000788
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_25",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.05912440000000788
+    },
+    {
+      "name": "sm80_xmma_dgrad_implicit_gemm_f16f16_f16f32_f32_nhwckrsc_nhwc_tilesize64x64x64_stage4_warpsize2x2x1_g1_tensor16x8x16_execute_kernel__5x_cudnn",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.05902810000001046
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_53",
+      "calls": 40,
+      "gpu_milliseconds_per_step": 0.05751770000000615
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_53",
+      "calls": 40,
+      "gpu_milliseconds_per_step": 0.05751770000000615
+    },
+    {
+      "name": "aten::_index_put_impl_",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.05716599999995888
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_82",
+      "calls": 50,
+      "gpu_milliseconds_per_step": 0.055908099999994375
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_82",
+      "calls": 50,
+      "gpu_milliseconds_per_step": 0.055908099999994375
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_62",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.05421209999998755
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_62",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.05421209999998755
+    },
+    {
+      "name": "void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_32x1_tn_align8>(cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_32x1_tn_align8::Params)",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.053719199999993
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_22",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.053553100000002456
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_22",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.053553100000002456
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_43",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.053069500000012704
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_43",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.053069500000012704
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_add_max_pool2d_with_indices_backward_native_batch_norm_backward_relu_slice_threshold_backward_54",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.05283280000000596
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_add_max_pool2d_with_indices_backward_native_batch_norm_backward_relu_slice_threshold_backward_54",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.05283280000000596
+    },
+    {
+      "name": "aten::sort",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.051932899999956136
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_60",
+      "calls": 30,
+      "gpu_milliseconds_per_step": 0.051466500000002274
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_60",
+      "calls": 30,
+      "gpu_milliseconds_per_step": 0.051466500000002274
+    },
+    {
+      "name": "void cutlass::Kernel2<cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_tn_align8>(cutlass_80_wmma_tensorop_f16_s161616gemm_f16_32x32_64x1_tn_align8::Params)",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.05072080000001297
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_cat_max_pool2d_with_indices_relu_124",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.05051280000000698
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_cat_max_pool2d_with_indices_relu_124",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.05051280000000698
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_50",
+      "calls": 40,
+      "gpu_milliseconds_per_step": 0.049437799999987334
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_50",
+      "calls": 40,
+      "gpu_milliseconds_per_step": 0.049437799999987334
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_65",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.04922639999999665
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_65",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.04922639999999665
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_93",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.049012000000000264
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_93",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.049012000000000264
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_112",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.04870150000000431
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_112",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.04870150000000431
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_native_batch_norm_backward_relu_slice_threshold_backward_135",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.04506010000000679
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_native_batch_norm_backward_relu_slice_threshold_backward_135",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.04506010000000679
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_threshold_backward_69",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.04456740000000209
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_threshold_backward_69",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.04456740000000209
+    },
+    {
+      "name": "aten::nonzero",
+      "calls": 50,
+      "gpu_milliseconds_per_step": 0.04363620000005176
+    },
+    {
+      "name": "triton_poi_fused_max_pool2d_with_indices_max_pool2d_with_indices_backward_slice_47",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.04318790000000081
+    },
+    {
+      "name": "triton_poi_fused_max_pool2d_with_indices_max_pool2d_with_indices_backward_slice_47",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.04318790000000081
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_57",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.042989499999989134
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_57",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.042989499999989134
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_88",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.042228300000025046
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_88",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.042228300000025046
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_36",
+      "calls": 40,
+      "gpu_milliseconds_per_step": 0.041584800000003815
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_36",
+      "calls": 40,
+      "gpu_milliseconds_per_step": 0.041584800000003815
+    },
+    {
+      "name": "aten::index",
+      "calls": 130,
+      "gpu_milliseconds_per_step": 0.04101519999997836
+    },
+    {
+      "name": "triton_for_fused_7",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.04066609999998764
+    },
+    {
+      "name": "triton_for_fused_7",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.04066609999998764
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_90",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.03937659999998577
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_90",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.03937659999998577
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_41",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.03917199999999466
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_41",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.03917199999999466
+    },
+    {
+      "name": "triton_for_fused_12",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.03907280000001774
+    },
+    {
+      "name": "triton_for_fused_12",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.03907280000001774
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_144",
+      "calls": 40,
+      "gpu_milliseconds_per_step": 0.03859300000003787
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_144",
+      "calls": 40,
+      "gpu_milliseconds_per_step": 0.03859300000003787
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_62",
+      "calls": 60,
+      "gpu_milliseconds_per_step": 0.037619799999972024
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_62",
+      "calls": 60,
+      "gpu_milliseconds_per_step": 0.037619799999972024
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_90",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.03753030000000508
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_90",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.03753030000000508
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_threshold_backward_83",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.0363047000000166
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_threshold_backward_83",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.0363047000000166
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_native_batch_norm_backward_relu_slice_threshold_backward_132",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.035923900000026335
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_native_batch_norm_backward_relu_slice_threshold_backward_132",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.035923900000026335
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_56",
+      "calls": 50,
+      "gpu_milliseconds_per_step": 0.03470790000002453
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_56",
+      "calls": 50,
+      "gpu_milliseconds_per_step": 0.03470790000002453
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_128",
+      "calls": 40,
+      "gpu_milliseconds_per_step": 0.03439120000000985
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_128",
+      "calls": 40,
+      "gpu_milliseconds_per_step": 0.03439120000000985
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_55",
+      "calls": 50,
+      "gpu_milliseconds_per_step": 0.034029700000006415
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_55",
+      "calls": 50,
+      "gpu_milliseconds_per_step": 0.034029700000006415
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_threshold_backward_97",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.03310479999999443
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_threshold_backward_97",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.03310479999999443
+    },
+    {
+      "name": "triton_per_fused_mean_147",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.031149500000020636
+    },
+    {
+      "name": "triton_per_fused_mean_147",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.031149500000020636
+    },
+    {
+      "name": "triton_poi_fused__to_copy_138",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.030871100000006847
+    },
+    {
+      "name": "triton_poi_fused__to_copy_138",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.030871100000006847
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_85",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.030192300000020624
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_85",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.030192300000020624
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_111",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.029984500000005212
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_111",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.029984500000005212
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_77",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.027322000000032497
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_77",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.027322000000032497
+    },
+    {
+      "name": "void at::native::index_elementwise_kernel<128, 4, at::native::gpu_index_kernel<at::native::index_kernel_impl<at::native::OpaqueType<8> >(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>)::{lambda(char*, char const*, long)#1}>(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>, at::native::index_kernel_impl<at::native::OpaqueType<8> >(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>)::{lambda(char*, char const*, long)#1} const&, bool)::{lambda(int)#1}>(long, at::native::gpu_index_kernel<at::native::index_kernel_impl<at::native::OpaqueType<8> >(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>)::{lambda(char*, char const*, long)#1}>(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>, at::native::index_kernel_impl<at::native::OpaqueType<8> >(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>)::{lambda(char*, char const*, long)#1} const&, bool)::{lambda(int)#1})",
+      "calls": 90,
+      "gpu_milliseconds_per_step": 0.02635899999997346
+    },
+    {
+      "name": "aten::mm",
+      "calls": 60,
+      "gpu_milliseconds_per_step": 0.026070900000015537
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_threshold_backward_57",
+      "calls": 40,
+      "gpu_milliseconds_per_step": 0.025978100000007547
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_threshold_backward_57",
+      "calls": 40,
+      "gpu_milliseconds_per_step": 0.025978100000007547
+    },
+    {
+      "name": "triton_poi_fused__to_copy_194",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.024842000000005648
+    },
+    {
+      "name": "triton_poi_fused__to_copy_194",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.024842000000005648
+    },
+    {
+      "name": "aten::sum",
+      "calls": 100,
+      "gpu_milliseconds_per_step": 0.024019299999974465
+    },
+    {
+      "name": "triton_poi_fused__to_copy_81",
+      "calls": 50,
+      "gpu_milliseconds_per_step": 0.02389800000002433
+    },
+    {
+      "name": "triton_poi_fused__to_copy_81",
+      "calls": 50,
+      "gpu_milliseconds_per_step": 0.02389800000002433
+    },
+    {
+      "name": "triton_poi_fused__to_copy_127",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.022717100000001666
+    },
+    {
+      "name": "triton_poi_fused__to_copy_127",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.022717100000001666
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_102",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.02250279999999184
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_102",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.02250279999999184
+    },
+    {
+      "name": "triton_for_fused_4",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.022371599999985486
+    },
+    {
+      "name": "triton_for_fused_4",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.022371599999985486
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_threshold_backward_137",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.0222788000000146
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_threshold_backward_137",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.0222788000000146
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_49",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.022067599999986125
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_relu_49",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.022067599999986125
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_134",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.021596899999974994
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_134",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.021596899999974994
+    },
+    {
+      "name": "triton_poi_fused__to_copy_pow_140",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.020384400000008466
+    },
+    {
+      "name": "triton_poi_fused__to_copy_pow_140",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.020384400000008466
+    },
+    {
+      "name": "void cublasLt::splitKreduce_kernel<32, 16, int, __half, __half, float, __half, false, __half, __half, __half, true, false, false, false>(cublasLt::cublasSplitKParams<float>, __half const*, __half const*, __half*, __half*, float const*, float const*, __half const*, __half const*, __half*, void*, long, float*, int*, float*, float*, float const*, float const*, float const*, float const*, float const*)",
+      "calls": 110,
+      "gpu_milliseconds_per_step": 0.01997800000001007
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_29",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.019907699999977924
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_29",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.019907699999977924
+    },
+    {
+      "name": "triton_poi_fused_max_pool2d_with_indices_max_pool2d_with_indices_backward_21",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.01986950000002107
+    },
+    {
+      "name": "triton_poi_fused_max_pool2d_with_indices_max_pool2d_with_indices_backward_21",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.01986950000002107
+    },
+    {
+      "name": "void (anonymous namespace)::indexing_backward_kernel_stride_1<float>(long const*, long const*, float const*, float*, long, long, long, long, bool)",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.0196835999999581
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_threshold_backward_103",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.019648399999987305
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_threshold_backward_103",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.019648399999987305
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_threshold_backward_140",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.01955550000001822
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_threshold_backward_140",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.01955550000001822
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_11",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.019517499999985012
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_11",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.019517499999985012
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_122",
+      "calls": 50,
+      "gpu_milliseconds_per_step": 0.019398999999978697
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_122",
+      "calls": 50,
+      "gpu_milliseconds_per_step": 0.019398999999978697
+    },
+    {
+      "name": "triton_for_fused_3",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.019280500000013856
+    },
+    {
+      "name": "triton_for_fused_3",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.019280500000013856
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_threshold_backward_16",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.0188578000000045
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_threshold_backward_16",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.0188578000000045
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_133",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.01873310000000929
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_133",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.01873310000000929
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_8",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.018346000000026834
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_8",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.018346000000026834
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_threshold_backward_66",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.018285000000007857
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_threshold_backward_66",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.018285000000007857
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_28",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.017763399999982356
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_28",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.017763399999982356
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_add_max_pool2d_with_indices_backward_relu_slice_threshold_backward_26",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.017673699999998644
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_add_max_pool2d_with_indices_backward_relu_slice_threshold_backward_26",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.017673699999998644
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_threshold_backward_82",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.017654799999990794
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_threshold_backward_82",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.017654799999990794
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_add_max_pool2d_with_indices_backward_relu_slice_threshold_backward_23",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.016326700000008715
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_add_max_pool2d_with_indices_backward_relu_slice_threshold_backward_23",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.016326700000008715
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_native_batch_norm_backward_relu_slice_threshold_backward_105",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.01625610000000161
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_native_batch_norm_backward_relu_slice_threshold_backward_105",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.01625610000000161
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_threshold_backward_60",
+      "calls": 40,
+      "gpu_milliseconds_per_step": 0.016243999999985683
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_threshold_backward_60",
+      "calls": 40,
+      "gpu_milliseconds_per_step": 0.016243999999985683
+    },
+    {
+      "name": "triton_poi_fused__to_copy_59",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.016073999999969238
+    },
+    {
+      "name": "triton_poi_fused__to_copy_59",
+      "calls": 20,
+      "gpu_milliseconds_per_step": 0.016073999999969238
+    },
+    {
+      "name": "void at::native::reduce_kernel<512, 1, at::native::ReduceOp<float, at::native::func_wrapper_t<float, at::native::sum_functor<float, float, float>::operator()(at::TensorIterator&)::{lambda(float, float)#1}>, unsigned int, float, 4, 4> >(at::native::ReduceOp<float, at::native::func_wrapper_t<float, at::native::sum_functor<float, float, float>::operator()(at::TensorIterator&)::{lambda(float, float)#1}>, unsigned int, float, 4, 4>)",
+      "calls": 70,
+      "gpu_milliseconds_per_step": 0.015747199999976147
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_threshold_backward_94",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.015734499999998663
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_native_batch_norm_backward_threshold_backward_94",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.015734499999998663
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_72",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.015725499999997557
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_convolution_backward_native_batch_norm_backward_72",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.015725499999997557
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_div_expand_native_batch_norm_backward_relu_slice_threshold_backward_view_20",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.015363599999998406
+    },
+    {
+      "name": "triton_poi_fused__native_batch_norm_legit_functional_div_expand_native_batch_norm_backward_relu_slice_threshold_backward_view_20",
+      "calls": 10,
+      "gpu_milliseconds_per_step": 0.015363599999998406
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_73",
+      "calls": 40,
+      "gpu_milliseconds_per_step": 0.015101400000003196
+    },
+    {
+      "name": "triton_red_fused__native_batch_norm_legit_functional_73",
+      "calls": 40,
+      "gpu_milliseconds_per_step": 0.015101400000003196
+    }
+  ]
+}

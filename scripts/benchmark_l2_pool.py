@@ -1,10 +1,13 @@
 """Time L2 pooling alone on the input shapes it has inside FaceNet NN2.
 
-Three implementations are compared on a forward and backward pass under fp16
-autocast, as in training: the eager PyTorch operations, the same operations
-compiled by torch.compile, and the fused Triton kernels. For each shape the
-script also reports the peak extra GPU memory of one pass and the largest
-difference of the output and the input gradient from a float32 reference.
+Three implementations are compared on a forward and backward pass: the eager
+PyTorch operations, the same operations compiled by torch.compile, and the
+fused Triton kernels. Every shape is measured twice: on float16 tensors under
+fp16 autocast, as in training, and on float32 tensors without autocast, so
+that the gain of fusion is seen apart from the gain of lower precision. For
+each shape the script also reports the peak extra GPU memory of one pass and
+the largest difference of the output and the input gradient from a float32
+reference.
 Writes runs/l2_pool_benchmark.json.
 
 Usage (from the repository root):
@@ -12,7 +15,7 @@ Usage (from the repository root):
 """
 from collections.abc import Callable
 import json
-from typing import cast
+from typing import Literal, cast
 
 from pydantic import BaseModel
 import torch
@@ -37,6 +40,8 @@ from face_verification.training_settings import (
 )
 
 Shape = tuple[int, int, int, int]
+Precision = Literal["fp16_autocast", "float32"]
+PRECISIONS: tuple[Precision, ...] = ("fp16_autocast", "float32")
 
 
 class VariantTiming(BaseModel):
@@ -53,6 +58,7 @@ class ShapeResult(BaseModel):
     """All implementations on one input shape and how many layers have it."""
 
     shape: list[int]
+    precision: Precision
     layers: int
     variants: list[VariantTiming]
 
@@ -71,7 +77,7 @@ def attach_shape_recorder(model: nn.Module, shapes: dict[Shape, int]) -> None:
 
 def collect_pool_shapes() -> dict[Shape, int]:
     """Run NN2 once and count the input shapes of its L2 pooling layers."""
-    model = FaceNetNN2("eager").cuda()
+    model = FaceNetNN2("eager", False).cuda()
     shapes: dict[Shape, int] = {}
     attach_shape_recorder(model, shapes)
     images = torch.zeros(BENCHMARK_BATCH_SIZE, IMAGE_CHANNELS, *INPUT_SIZE)
@@ -85,16 +91,22 @@ def pool(function: PoolFunction, features: torch.Tensor) -> torch.Tensor:
     return function(features, L2_POOL_KERNEL_SIZE, L2_POOL_STRIDE, L2_POOL_PADDING)
 
 
+def autocast_for(features: torch.Tensor) -> torch.autocast:
+    """Return fp16 autocast for float16 features and no autocast for float32."""
+    enabled = features.dtype == torch.float16
+    return torch.autocast(device_type="cuda", dtype=torch.float16, enabled=enabled)
+
+
 def make_pass(
     function: PoolFunction,
     features: torch.Tensor,
     gradient: torch.Tensor,
 ) -> Callable[[], None]:
-    """Return a forward and backward pass under fp16 autocast."""
+    """Return a forward and backward pass in the precision of the features."""
 
     def run_pass() -> None:
         features.grad = None
-        with torch.autocast(device_type="cuda", dtype=torch.float16):
+        with autocast_for(features):
             output = pool(function, features)
         upstream = gradient.to(output.dtype)
         output.backward(upstream)  # pyright: ignore[reportUnknownMemberType]
@@ -131,7 +143,7 @@ def measure_errors(
     """Return the largest output and gradient differences from float32."""
     exact_output, exact_gradient = reference(features, gradient)
     make_pass(function, features, gradient)()
-    with torch.autocast(device_type="cuda", dtype=torch.float16):
+    with autocast_for(features):
         output = pool(function, features.detach())
     output_error = (output.float() - exact_output).abs().max().item()
     gradient_error = (cast(torch.Tensor, features.grad).float() - exact_gradient).abs()
@@ -171,23 +183,27 @@ def build_variants() -> dict[str, PoolFunction]:
     }
 
 
-def benchmark_shape(shape: Shape, layers: int) -> ShapeResult:
-    """Time every implementation on fp16 post-ReLU features of one shape."""
+def benchmark_shape(shape: Shape, layers: int, precision: Precision) -> ShapeResult:
+    """Time every implementation on post-ReLU features of one shape."""
+    dtype = torch.float16 if precision == "fp16_autocast" else torch.float32
     generator = torch.Generator(device="cuda").manual_seed(0)
     features = functional.relu(torch.randn(shape, device="cuda", generator=generator))
-    features = features.half().requires_grad_()
-    gradient = torch.randn(shape, device="cuda", generator=generator).half()
+    features = features.to(dtype).requires_grad_()
+    gradient = torch.randn(shape, device="cuda", generator=generator).to(dtype)
     timings: list[VariantTiming] = [
         time_variant(name, function, features, gradient)
         for name, function in build_variants().items()
     ]
-    return ShapeResult(shape=list(shape), layers=layers, variants=timings)
+    return ShapeResult(
+        shape=list(shape), precision=precision, layers=layers, variants=timings
+    )
 
 
 def main() -> None:
     """Benchmark every L2 pooling shape of NN2 and write the results."""
     results: list[ShapeResult] = [
-        benchmark_shape(shape, layers)
+        benchmark_shape(shape, layers, precision)
+        for precision in PRECISIONS
         for shape, layers in collect_pool_shapes().items()
     ]
     payload: list[dict[str, object]] = [result.model_dump() for result in results]
